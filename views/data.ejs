@@ -1,0 +1,11 @@
+<h1>Data Page</h1>
+<p>First name: <%= person.firstname %></p>
+<p>Id: <%= person._id %></p>
+<% if(person.data[0].meta.RMR){ %>
+    <p>Meta: RMR = <%= person.data[0].meta.RMR %></p>
+<% } %>
+<% if(person.data[0].meta.BMR){ %>
+    <p>Meta: BMR: <%= person.data[0].meta.BMR %></p>
+<% } %>
+<p>Caloric Level = <%= person.data[0].meta.Caloric_Level %></p>
+<p>Signup Date: <%= person.signup_date %></p>

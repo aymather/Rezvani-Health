@@ -16,12 +16,12 @@
 function Weir(VO2, VCO2){
 
     // Respitory Quotient (RQ)
-    let RQ = VO2 / VCO2;
+    //let RQ = VCO2 / VO2;
 
     // Resting Energy Expenditure (REE)
     let REE = ((3.9 * VO2) + (1.1 * VCO2)) * 1.44;
 
-    return {REE, RQ};
+    return REE;
 
 };
 
@@ -71,13 +71,22 @@ function Miff_Jeor(gender, weight, height, age){
 // Katch-McArdle (BMR) | For clients with lean body mass
 
 // Weight (kg)
-// Body Fat Percentage (BFP)
+// Height (cm)
 // LBM = Weight - (Weight * BFP)
 
-function Katch_Mc(weight, BFP){
+// LBM (men) = 0.407 * weight + 0.267 * height * 100 - 19.2
+// LBM (women) = 0.252 * weight + 0.473 * height * 100 - 48.3
+
+function Katch_Mc(gender, weight, height){
+
+    let LBM;
 
     // Calculate Lean Body Mass
-    let LBM = weight - (weight * BFP);
+    if (gender == 'male') {
+        LBM = (0.407 * weight) + (0.267 * height) - 19.2;
+    } else if (gender == 'female') {
+        LBM = (0.252 * weight) + (0.473 * height) - 48.3;
+    }
 
     // Calculate BMR
     let BMR = 370 + (21.6 * LBM);
@@ -101,5 +110,31 @@ function Cunningham(weight, BFP){
 }
 
 
+// IsWithinLevel = function that tells you which calorie
+// level you are within
+
+function IsWithinLevel(val){
+    // These are the levels organized by calorie range
+    const levels = [
+        [0, 1200],
+        [1201, 1365],
+        [1366, 1480],
+        [1481, 1685],
+        [1686, 1805],
+        [1806, 2180],
+        [2181, 2330],
+        [2331, 2450],
+        [2451, 2765],
+        [2766, 3065],
+        [3065, 9999]
+    ];
+
+    for(let i=0; i<levels.length;i++){
+        if(val >= levels[i][0] & val <= levels[i][1]){
+            return i+1;
+        }
+    }
+}
+
 module.exports = { Weir, Harris_Benedict, Miff_Jeor,
-                   Katch_Mc, Cunningham }
+                   Katch_Mc, Cunningham, IsWithinLevel }

@@ -4,21 +4,34 @@ const bodyParser = require('body-parser');
 const PORT = require('./config/keys').PORT;
 const path = require('path');
 const expressLayouts = require('express-ejs-layouts');
-const routes = require('./routes/index')
+const db = require('./config/keys').mongoURI;
+const mongoose = require('mongoose');
 
 // Init App
 const app = express();
 
-// Routes
-app.use(routes);
+// Connect to DataBase
+mongoose.connect(db, {useNewUrlParser: true})
+    .then(() => {
+        console.log('Connected to database...');
+    })
+    .catch((err) => { 
+        console.log(err);
+    })
 
 // Set View engine (EJS)
 app.use(expressLayouts);
 app.set('view engine', 'ejs');
 
-// Set routs directory
-app.use('/', require('./routes/index'));
+// Middleware
+app.use(bodyParser.urlencoded({ extended: false }));
+app.use(bodyParser.json());
 
+// Set routs directory
+app.use('/', require('./routes/rmrcalculator'));
+app.use('/', require('./routes/home'));
+
+app.use(express.static(path.join(__dirname, 'public')));
 app.set(path.join(__dirname, 'views'));
 
 app.listen(PORT, () => {

@@ -1,7 +1,9 @@
 const express = require('express');
 const router = express.Router();
 
-// Home page
+// Handles Home Page
+
+// GET
 router.get('/', (req, res) => {
     res.render('home');
 })
