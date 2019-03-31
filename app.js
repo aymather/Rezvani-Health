@@ -27,6 +27,12 @@ app.set('view engine', 'ejs');
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
 
+// Moment.js
+var moment = require('moment');
+var shortDateFormat = "MM-DD-YYYY";
+app.locals.moment = moment;
+app.locals.shortDateFormat = shortDateFormat;
+
 // Set routs directory
 app.use('/', require('./routes/rmrcalculator'));
 app.use('/', require('./routes/home'));

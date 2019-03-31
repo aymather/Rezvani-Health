@@ -9,14 +9,13 @@
 </form>
 
 <% if(client){ %>
-
     <div class="center">
         <p>Name: <%= client.firstname %> <%= client.lastname %></p>
-        <p>Signup Date: <%= client.signup_date %></p>
+        <p>Signup Date: <%= moment(client.signup_date).format(shortDateFormat) %> </p>
         <p><%= client.Metabolic_Type %></p>
         <% for(var i=0; i<client.data.length; i++) { %>
                 <div class="card border-success mb-3" style="max-width: 20rem;">
-                    <div class="card-header"><%= client.data[i].date %></div>
+                    <div class="card-header">Date Created: <%= moment(client.data[i].date).format(shortDateFormat) %></div>
                     <div class="card-body">
                         <p class="card-text">RMR: <%= client.data[i].meta.RMR %></p>
                         <p class="card-text">LDL: <%= client.data[i].meta.LDL %></p>
