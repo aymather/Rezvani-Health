@@ -10,7 +10,25 @@ const DataEntry = new Schema({
         RMR: {
             type: Number
         },
-        BMR: {
+        HDL: {
+            type: Number
+        },
+        LDL: {
+            type: Number
+        },
+        TC: {
+            type: Number
+        },
+        Ratio: {
+            type: Number
+        },
+        Trigs: {
+            type: Number
+        },
+        BFP: {
+            type: Number
+        },
+        Weight: {
             type: Number
         },
         Caloric_Level: {
@@ -25,6 +43,12 @@ const ClientSchema = new Schema({
         required: true
     },
     lastname: {
+        type: String
+    },
+    username: {
+        type: String
+    },
+    Metabolic_Type: {
         type: String
     },
     data: [DataEntry],

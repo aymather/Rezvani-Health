@@ -1,0 +1,34 @@
+<form class='center' method='POST' action='/database'>
+    <fieldset>
+        <legend>Find By Username</legend>
+        <div class="form-group">
+            <input type="text" name='username' class="form-control" placeholder="Enter Username">
+        </div>
+        <button type="submit" class="btn btn-primary">Submit</button>
+    </fieldset>
+</form>
+
+<% if(client){ %>
+
+    <div class="center">
+        <p>Name: <%= client.firstname %> <%= client.lastname %></p>
+        <p>Signup Date: <%= client.signup_date %></p>
+        <p><%= client.Metabolic_Type %></p>
+        <% for(var i=0; i<client.data.length; i++) { %>
+                <div class="card border-success mb-3" style="max-width: 20rem;">
+                    <div class="card-header"><%= client.data[i].date %></div>
+                    <div class="card-body">
+                        <p class="card-text">RMR: <%= client.data[i].meta.RMR %></p>
+                        <p class="card-text">LDL: <%= client.data[i].meta.LDL %></p>
+                        <p class="card-text">TC: <%= client.data[i].meta.TC %></p>
+                        <p class="card-text">Ratio: <%= client.data[i].meta.Ratio %></p>
+                        <p class="card-text">Triglycerides: <%= client.data[i].meta.Trigs %></p>
+                        <p class="card-text">Body Fat: <%= client.data[i].meta.BFP %>%</p>
+                        <p class="card-text">Weight: <%= client.data[i].meta.Weight %> lbs</p>
+                        <p class="card-text">Caloric Level: <%= client.data[i].meta.Caloric_Level %></p>
+                    </div>
+                </div>    
+        <% } %>
+    </div>
+
+<% } %>
