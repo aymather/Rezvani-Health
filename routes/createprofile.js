@@ -42,6 +42,7 @@ router.post('/createprofile', (req, res) => {
                 firstname: firstname,
                 lastname: lastname,
                 username: username,
+                gender: gender,
                 Metabolic_Type: Metabolic_Type,
                 data: [{
                     meta: {
@@ -58,11 +59,8 @@ router.post('/createprofile', (req, res) => {
                 }]
             })
 
-            console.log(client);
-            console.log(client.data[0].meta);
             client.save();
 
-        // 1. put everything into database
         // 4. perscribe meal plan
     } else {
         // 5. redirect back to form page with flash message

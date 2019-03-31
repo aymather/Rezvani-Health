@@ -32,6 +32,7 @@ app.use('/', require('./routes/rmrcalculator'));
 app.use('/', require('./routes/home'));
 app.use('/', require('./routes/createprofile'));
 app.use('/', require('./routes/database'));
+app.use('/', require('./routes/writeentry'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set(path.join(__dirname, 'views'));

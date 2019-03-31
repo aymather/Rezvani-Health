@@ -48,6 +48,9 @@ const ClientSchema = new Schema({
     username: {
         type: String
     },
+    gender: {
+        type: String
+    },
     Metabolic_Type: {
         type: String
     },
