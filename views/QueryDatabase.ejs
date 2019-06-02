@@ -13,6 +13,9 @@
         <p>Name: <%= client.firstname %> <%= client.lastname %></p>
         <p>Signup Date: <%= moment(client.signup_date).format(shortDateFormat) %> </p>
         <p><%= client.Metabolic_Type %></p>
+        <p>Birthday: <%= moment(client.birthday).format(shortDateFormat) %></p>
+        <p>Age: <%= moment().diff(client.birthday,'years') %></p>
+        <p>Medications: <%= client.medications %></p>
         <% for(var i=0; i<client.data.length; i++) { %>
                 <div class="card border-success mb-3" style="max-width: 20rem;">
                     <div class="card-header">Date Created: <%= moment(client.data[i].date).format(shortDateFormat) %></div>
@@ -26,6 +29,8 @@
                         <p class="card-text">Body Fat: <%= client.data[i].meta.BFP %>%</p>
                         <p class="card-text">Weight: <%= client.data[i].meta.Weight %> lbs</p>
                         <p class="card-text">Caloric Level: <%= client.data[i].meta.Caloric_Level %></p>
+                        <p class="card-text">Blood Glucose: <%= client.data[i].meta.Blood_Glucose %></p>
+                        <p class="card-text">Hemoglobin: <%= client.data[i].meta.Hemoglobin %></p>
                     </div>
                 </div>    
         <% } %>

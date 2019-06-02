@@ -1,10 +1,11 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
+const moment = require('moment');
 
 const DataEntry = new Schema({
     date: {
-        type: Date,
-        default: Date.now
+        type: Object,
+        default: moment()
     },
     meta: {
         RMR: {
@@ -33,11 +34,17 @@ const DataEntry = new Schema({
         },
         Caloric_Level: {
             type: Number
+        },
+        Blood_Glucose: {
+            type: Number
+        },
+        Hemoglobin: {
+            type: Number
         }
     }
 })
 
-const ClientSchema = new Schema({
+const UserSchema = new Schema({
     firstname: {
         type: String,
         required: true
@@ -46,9 +53,23 @@ const ClientSchema = new Schema({
         type: String
     },
     username: {
+        type: String,
+        required: true
+    },
+    password: {
+        type: String,
+        required: true
+    },
+    email: {
         type: String
     },
     gender: {
+        type: String
+    },
+    birthday: {
+        type: Object
+    },
+    medications: {
         type: String
     },
     Metabolic_Type: {
@@ -56,10 +77,10 @@ const ClientSchema = new Schema({
     },
     data: [DataEntry],
     signup_date: {
-        type: Date,
-        default: Date.now
+        type: Object,
+        default: moment()
     }
 });
 
-const Client = mongoose.model('clients', ClientSchema);
-module.exports = Client;
+const User = mongoose.model('users', UserSchema);
+module.exports = User;

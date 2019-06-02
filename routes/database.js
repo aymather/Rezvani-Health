@@ -1,11 +1,12 @@
 const express = require('express');
 const router = express.Router();
-const Client = require('../config/models');
+const User = require('../config/models');
+const { ensureAuthenticated } = require('../config/auth');
 
 // Handles requests to database page
 
 // GET
-router.get('/database', (req, res) => {
+router.get('/database', ensureAuthenticated, (req, res) => {
     var data;
     if(req.query.client){
         data = JSON.parse(req.query.client)[0];
@@ -17,8 +18,8 @@ router.get('/database', (req, res) => {
 
 // POST
 router.post('/database', (req, res) => {
-    var client = req.body.username;
-    Client.find({username: client})
+    var username = req.body.username;
+    User.find({username: username})
         .then(data => {
             res.redirect(`/database?client=${JSON.stringify(data)}`);
         })

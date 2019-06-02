@@ -1,6 +1,6 @@
 const express = require('express');
 const router = express.Router();
-const Client = require('../config/models');
+const User = require('../config/models');
 const IsWithinLevel = require('../backend_funcs/CalculateRMR').IsWithinLevel;
 const getMetabolicType = require('../backend_funcs/GetMetabolicType');
 
@@ -23,18 +23,18 @@ router.post('/writeentry', (req, res) => {
         Trigs = parseFloat(req.body.trigs.replace(',', '')),
         Weight = parseFloat(req.body.weight.replace(',','')),
         BFP = parseFloat(req.body.bfp.replace('%', ''));
-        Client.findOne({username: username})
-        .then(client => {
-            if(client.length !== 0){
+        User.findOne({username: username})
+        .then(user => {
+            if(user.length !== 0){
 
                 // Get Caloric Level (1-11)
                 Caloric_Level = IsWithinLevel(RMR);
 
                 // Get Metabolic Type (Dual-Metabolism | Carbohydrate Efficient | Fat & Protein Efficient | None)
-                Metabolic_Type = getMetabolicType(client.gender, HDL, LDL, TC, Ratio, Trigs);
+                Metabolic_Type = getMetabolicType(user.gender, HDL, LDL, TC, Ratio, Trigs);
                 
                 // Create entry and update info
-                client.data.push({
+                user.data.push({
                     meta: {
                         RMR: RMR,
                         HDL: HDL,
@@ -47,8 +47,8 @@ router.post('/writeentry', (req, res) => {
                         Caloric_Level: Caloric_Level
                     }
                 });
-                client.Metabolic_Type = Metabolic_Type;
-                client.save();
+                user.Metabolic_Type = Metabolic_Type;
+                user.save();
             }
         })
         .catch(err => {
