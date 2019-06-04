@@ -8,11 +8,11 @@ router.get('/register', (req, res) => {
 })
 
 router.post('/register', (req, res) => {
-    const { firstname, lastname, username, email, password, password2 } = req.body;
+    const { firstname, lastname, username, gender, email, password, password2 } = req.body;
     var messages = [];
 
     // Check that all fields are filled out
-    if (!firstname || !lastname || !username || !email || !password || !password2){
+    if (!firstname || !lastname || !username || !gender || !email || !password || !password2){
         messages.push({msg: 'Please make sure that all fields are filled out.'})
     }
 
@@ -59,6 +59,7 @@ router.post('/register', (req, res) => {
                         firstname: firstname,
                         lastname: lastname,
                         username: username,
+                        gender: gender,
                         email: email,
                         password: password
                     })

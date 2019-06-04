@@ -1,29 +1,41 @@
 <% if(typeof messages != 'undefined') { %>
     <% messages.forEach((error) => { %>
-        <div class="alert alert-dismissible alert-danger">
-            <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <div class="alert alert-danger anim1">
+            <button type="button" class="alert-btn">x</button>
             <%= error.msg %>
         </div>
     <% }); %>
 <% } %>
 
 <% if(success_msg != '') { %>
-    <div class="alert alert-dismissible alert-success">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div class="alert alert-success anim1">
+        <button type="button" class="alert-btn">x</button>
         <%= success_msg %>
     </div>
 <% } %>
 
 <% if(error_msg != '') { %>
-    <div class="alert alert-dismissible alert-danger">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div class="alert alert-danger anim1">
+        <button type="button" class="alert-btn">x</button>
         <%= error_msg %>
     </div>
 <% } %>
 
 <% if(error != '') { %>
-    <div class="alert alert-dismissible alert-danger">
-        <button type="button" class="close" data-dismiss="alert">&times;</button>
+    <div class="alert alert-danger anim1">
+        <button type="button" class="alert-btn">x</button>
         <%= error %>
     </div>
 <% } %>
+
+<script>
+    let dissmissables = document.querySelectorAll('.alert-btn');
+    dissmissables.forEach((btn) => {
+        btn.addEventListener('click', () => {
+            btn.parentNode.style.animation = '.5s ease 0s 1 fadeOut forwards';
+            setTimeout(() => {
+                btn.parentNode.style.display = 'none';
+            }, 500)
+        })
+    })
+</script>

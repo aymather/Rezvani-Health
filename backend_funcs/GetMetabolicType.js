@@ -13,13 +13,15 @@ function getMetabolicType(gender, HDL, LDL, TC, Ratio, Trigs){
 
     // Init settings for metabolic types
     let settings, sum = 0;
-    if(gender == 'male'){
+    if(gender === 'male' || gender === 'other'){
         settings = require('../config/keys').MaleMetablicSettings;
-    } else if (gender == 'female') {
+    } else if (gender === 'female') {
         settings = require('../config/keys').FemaleMetablicSettings;
     } else {
         console.log('Invalid gender type.');
     }
+
+    console.log(settings);
 
     // Dual-Metabolism (step 1)
     sum += isWithinRange(HDL, settings.DM.HDL);

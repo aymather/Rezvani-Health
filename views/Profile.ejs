@@ -1,0 +1,40 @@
+<div class="layout">
+    <% include ./Navigation %>
+    <div class="wrap">
+        <div class="profile-header">
+            <h1 class='profile-name'>Welcome <%= user.firstname %></h1>
+            <img src='/img/banner.jpeg' class='profile-img'>
+        </div>
+        <form action="/profile" method='POST' class='form'>
+            <div class='form-field'>  
+                <input type="text" class='form-field-input' name='firstname' value='<%= user.firstname%>'>
+                <small class='form-field-small'>first name</small>
+            </div>
+            <div class='form-field'>
+                <input type="text" class='form-field-input' name='lastname' value='<%= user.lastname%>'>
+                <small class='form-field-small'>last name</small>
+            </div>
+            <div class="form-field">
+                <textarea name="status" class='form-text-field-input'><%= user.status %></textarea>
+                <small class='form-field-small'>status</small>
+            </div>
+            <div class="form-field">
+                <input type="text" class='form-field-input' name='username' value='<%= user.username%>'>
+                <small class='form-field-small'>username</small>
+            </div>
+            <div class="form-field">
+                <input type="text" class='form-field-input' name='email' value='<%= user.email%>'>
+                <small class='form-field-small'>email</small>
+            </div>
+            <div class="form-field">
+                <input type="date" class='form-field-input' name='birthday' value='<%= user.birthday%>'>
+                <small class='form-field-small'>birthday</small>
+            </div>
+            <div class="form-field">
+                <textarea name="medications" class='form-text-field-input'><%= user.medications %></textarea>
+                <small class='form-field-small'>medications</small>
+            </div>
+            <button type='submit' class='btn'>Save</button>
+        </form>
+    </div>
+</div>

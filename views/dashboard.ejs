@@ -1,1 +1,13 @@
-<h1>Dashboard</h1>
+<div class="layout">
+    <% include ./Navigation %>
+    <div class="wrap">
+        <div class='dashboard-header'>
+            <h1>Dashboard</h1>
+            <p>find out how you're doing through oura</p>
+        </div>
+        <a class='oura-link' href=<%= auth_uri %>>Authenticate with Oura</a>
+        <a href="/getsleepdata" class='oura-link'>Get Sleep Data</a>
+        <a href="/getactivitydata" class='oura-link'>Get Activity Data</a>
+        <a href="/getreadinessdata" class='oura-link'>Get Readiness Data</a>
+    </div>
+</div>

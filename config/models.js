@@ -52,6 +52,12 @@ const UserSchema = new Schema({
     lastname: {
         type: String
     },
+    picture: {
+        type: String
+    },
+    status: {
+        type: String
+    },
     username: {
         type: String,
         required: true
@@ -79,6 +85,17 @@ const UserSchema = new Schema({
     signup_date: {
         type: Object,
         default: moment()
+    },
+    oura_userinfo: {
+        user_id: { type: String },
+        age: { type: Number },
+        weight: { type: Number },
+        gender: { type: String },
+        email: { type: String }
+    },
+    oura_api: {
+        oura_access_token: { type: String },
+        oura_refresh_token: { type: String }
     }
 });
 

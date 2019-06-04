@@ -72,6 +72,11 @@ app.use('/', require('./routes/register'));
 app.use('/', require('./routes/logout'));
 app.use('/', require('./routes/dashboard'));
 app.use('/', require('./routes/auth'));
+app.use('/', require('./routes/getsleepdata'));
+app.use('/', require('./routes/getactivitydata'));
+app.use('/', require('./routes/getreadinessdata'));
+app.use('/', require('./routes/profile'));
+app.use('/', require('./routes/journal'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set(path.join(__dirname, 'views'));

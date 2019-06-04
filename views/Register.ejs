@@ -1,66 +1,69 @@
-<form class='container' method='POST' action='/register'>
-    <fieldset>
-        <legend>Register</legend>
+<div class="layout">
+    <div class="login-wrap">
+        <div class="login-header">
+            <% include ./Logo %>
+            <h1 class='login-title anim1'>Rezvani Health</h1>
+        </div>
         <% include ./partials/messages %>
-        <div class="form-group">
+        <form class='login-form' method='POST' action='/register'>
             <input 
                 type="text" 
-                class="form-control" 
+                class="login-input anim2" 
                 placeholder="First Name" 
                 name='firstname'
                 value="<%= typeof firstname != 'undefined' ? firstname : '' %>"
             >
-        </div>
-        <div class="form-group">
             <input 
                 type="text" 
-                class="form-control" 
+                class="login-input anim3" 
                 placeholder="Last Name" 
                 name='lastname'
                 value="<%= typeof lastname != 'undefined' ? lastname : '' %>"
             >
-        </div>
-        <div class="form-group">
             <input 
                 type="text" 
-                class="form-control" 
+                class="login-input anim4" 
                 placeholder="Username" 
                 name='username'
                 value="<%= typeof username != 'undefined' ? username : '' %>"
             >
-        </div>
-        <div class="form-group">
+            <div class="radio-group">
+                <input class='login-input anim5' type="radio" name="gender" id="male" value="male">
+                <label class='label anim5' for="male">Male</label>
+            </div>
+            <div class="radio-group">
+                <input class='login-input anim5' type="radio" name="gender" id="female" value="female">
+                <label class='label anim5' for="female">Female</label>
+            </div>
+            <div class="radio-group">
+                <input class='login-input anim5' type="radio" name="gender" id="other" value="other">
+                <label class='label anim5' for="other">Other</label>
+            </div>
             <input 
                 type="email" 
-                class="form-control" 
-                id="exampleInputEmail1" 
-                aria-describedby="emailHelp" 
+                class="login-input anim5"
                 placeholder="Enter email" 
                 name='email'
                 value="<%= typeof email != 'undefined' ? email : '' %>"
             >
-            <small id="emailHelp" class="form-text text-muted">We'll never share your email with anyone else.</small>
-        </div>
-        <div class="form-group">
             <input 
                 type="password" 
-                class="form-control" 
-                id="exampleInputPassword1" 
+                class="login-input anim6"
                 placeholder="Password" 
                 name='password'
                 value="<%= typeof password != 'undefined' ? password : '' %>"
             >
-        </div>
-        <div class="form-group">
             <input 
                 type="password" 
-                class="form-control" 
-                id="exampleInputPassword1" 
+                class="login-input anim7"
                 placeholder="Confirm Password" 
                 name='password2'
                 value="<%= typeof password2 != 'undefined' ? password2 : '' %>"
             >
+            <button type="submit" class="login-btn anim8">Register</button>
+        </form>
+        <div class="form-text-bottom anim9">
+            <a href='/login'>Already have an account?</a>
         </div>
-        <button type="submit" class="btn btn-primary">Submit</button>
-    </fieldset>
-</form>
+    </div>
+</div>

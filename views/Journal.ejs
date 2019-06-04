@@ -1,0 +1,63 @@
+<div class="layout">
+    <% include ./Navigation %>
+    <div class="wrap">
+        <div class="journal-header">
+            <h1 class='journal-title'>How are your Triglycerides today?</h1>
+        </div>
+        <form action="/journal" 
+              class="form"
+              method='POST'>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="RMR" name='RMR'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="HDL" name='HDL'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="LDL" name='LDL'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="TC" name='TC'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="Ratio" name='ratio'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="Triglycerides" name='trigs'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="Body Fat Percentage" name='bfp'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="Weight" name='weight'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="Hemoglobin" name='hemoglobin'>
+            </div>
+            <div class="form-field">
+                <input type="text" class="form-field-input" placeholder="Blood Glucose" name='blood_glucose'>
+            </div>
+            <button type='submit' class='btn'>Submit</button>
+        </form>
+        <div class="journal-history">
+            <% for(var i=0; i<user.data.length; i++) { %>
+                <div class="card">
+                    <h1 class="card-header">Date Created: <br><%= moment(user.data[i].date).format(shortDateFormat) %></h1>
+                    <div class="card-body">
+                        <p class="card-text">RMR: <%= user.data[i].meta.RMR %></p>
+                        <p class="card-text">HDL: <%= user.data[i].meta.HDL %></p>
+                        <p class="card-text">LDL: <%= user.data[i].meta.LDL %></p>
+                        <p class="card-text">TC: <%= user.data[i].meta.TC %></p>
+                        <p class="card-text">Ratio: <%= user.data[i].meta.Ratio %></p>
+                        <p class="card-text">Triglycerides: <%= user.data[i].meta.Trigs %></p>
+                        <p class="card-text">Body Fat: <%= user.data[i].meta.BFP %>%</p>
+                        <p class="card-text">Weight: <%= user.data[i].meta.Weight %> lbs</p>
+                        <p class="card-text">Caloric Level: <%= user.data[i].meta.Caloric_Level %></p>
+                        <p class="card-text">Blood Glucose: <%= user.data[i].meta.Blood_Glucose %></p>
+                        <p class="card-text">Hemoglobin: <%= user.data[i].meta.Hemoglobin %></p>
+                    </div>
+                </div>    
+            <% } %>
+        </div>
+    </div>
+</div>
