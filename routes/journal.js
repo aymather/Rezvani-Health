@@ -32,14 +32,15 @@ router.post('/journal', ensureAuthenticated, (req, res) => {
     BFP = parseFloat(bfp.replace('%', ''));
 
     // Get Caloric Level (1-11)
-    Caloric_Level = GetCaloricLevel(RMR);
-
+    let Caloric_Level = GetCaloricLevel(RMR);
+    console.log(Caloric_Level);
+    console.log(getMetabolicType);
     // Get Metabolic Type (Dual-Metabolism | Carbohydrate Efficient | Fat & Protein Efficient | None)
     let Metabolic_Type = getMetabolicType(req.user.gender, HDL, LDL, TC, Ratio, Trigs);
-
+    console.log(Metabolic_Type);
     // Get Macros based on metabolic type
     let Macros = get_macros(Metabolic_Type);
-
+    console.log(Macros);
     // Find user in database
     User.findOne({ username: req.user.username })
         .then(userdata => {

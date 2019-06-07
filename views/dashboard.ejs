@@ -9,6 +9,11 @@
         <a href="/getsleepdata" class='oura-link'>Get Sleep Data</a>
         <a href="/getactivitydata" class='oura-link'>Get Activity Data</a>
         <a href="/getreadinessdata" class='oura-link'>Get Readiness Data</a>
+        <% if (user.Metabolic_Type) { %>
+            <h1 class='journal-title'>Your Metabolic Type: <span class='highlight'><%= user.Metabolic_Type %></span></h1>
+        <% } else { %> 
+            <h1>Find out your Metabolic Type by creating a journal entry.</h1>
+        <% } %>
         <div class="journal-history">
             <% for(var i=0; i<user.data.length; i++) { %>
                 <div class="card">

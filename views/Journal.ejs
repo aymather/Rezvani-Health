@@ -2,11 +2,7 @@
     <% include ./Navigation %>
     <div class="wrap">
         <div class="journal-header">
-            <% if (user.Metabolic_Type) { %>
-                <h1 class='journal-title'>Your Metabolic Type: <span class='highlight'><%= user.Metabolic_Type %></span></h1>
-            <% } else { %> 
-                <h1>Find out your Metabolic Type by creating an entry.</h1>
-            <% } %>
+            <h1 class="journal-title">Create an entry</h1>
         </div>
         <form action="/journal" 
               class="form"
