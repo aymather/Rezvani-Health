@@ -9,5 +9,25 @@
         <a href="/getsleepdata" class='oura-link'>Get Sleep Data</a>
         <a href="/getactivitydata" class='oura-link'>Get Activity Data</a>
         <a href="/getreadinessdata" class='oura-link'>Get Readiness Data</a>
+        <div class="journal-history">
+            <% for(var i=0; i<user.data.length; i++) { %>
+                <div class="card">
+                    <h1 class="card-header">Date Created: <br><%= moment(user.data[i].date).format(shortDateFormat) %></h1>
+                    <div class="card-body">
+                        <p class="card-text">RMR: <%= user.data[i].meta.RMR %></p>
+                        <p class="card-text">HDL: <%= user.data[i].meta.HDL %></p>
+                        <p class="card-text">LDL: <%= user.data[i].meta.LDL %></p>
+                        <p class="card-text">TC: <%= user.data[i].meta.TC %></p>
+                        <p class="card-text">Ratio: <%= user.data[i].meta.Ratio %></p>
+                        <p class="card-text">Triglycerides: <%= user.data[i].meta.Trigs %></p>
+                        <p class="card-text">Body Fat: <%= user.data[i].meta.BFP %>%</p>
+                        <p class="card-text">Weight: <%= user.data[i].meta.Weight %> lbs</p>
+                        <p class="card-text">Caloric Level: <%= user.data[i].meta.Caloric_Level %></p>
+                        <p class="card-text">Blood Glucose: <%= user.data[i].meta.Blood_Glucose %></p>
+                        <p class="card-text">Hemoglobin: <%= user.data[i].meta.Hemoglobin %></p>
+                    </div>
+                </div>    
+            <% } %>
+        </div>
     </div>
 </div>

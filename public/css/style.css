@@ -1,9 +1,11 @@
+
 /* General */
 
 * {
     margin: 0;
     padding: 0;
-    box-sizing: border-box;
+    -webkit-box-sizing: border-box;
+            box-sizing: border-box;
     font-family: 'Quicksand', sans-serif;
     text-decoration: none;
 }
@@ -31,8 +33,13 @@ body {
 /* Layout */
 
 .layout {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column-reverse;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
     width: 100%;
     height: 100vh;
     overflow-y: scroll;
@@ -41,10 +48,17 @@ body {
 
 .wrap {
     padding: 50px 60px 0px 60px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     overflow-y: scroll;
-    flex-grow: 1;
+    -webkit-box-flex: 1;
+        -ms-flex-positive: 1;
+            flex-grow: 1;
     height: 90vh;
 }
 
@@ -54,7 +68,10 @@ body {
 
 @media screen and (min-width: 560px) {
     .layout {
-        flex-direction: row;
+        -webkit-box-orient: horizontal;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: row;
+                flex-direction: row;
     }
     .wrap {
         height: 100%;
@@ -71,10 +88,19 @@ body {
     color: #eee;
     margin: 10px auto;
     border-radius: 5px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
-    flex-direction: row-reverse;
-    align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
     opacity: 0;
 }
 
@@ -89,8 +115,11 @@ body {
 }
 
 .alert-btn {
+    -webkit-appearance: none;
     background-color: transparent;
     color: #eee;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
     transition: color 0.3s ease;
     border: none;
     font-size: .85rem;
@@ -120,9 +149,14 @@ body {
 .nav-links {
     width: 100%;
     height: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-around;
-    align-items: center;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .link {
@@ -132,8 +166,13 @@ body {
 .nav-head {
     height: 200px;
     width: 100%;
-    flex-direction: column;
-    justify-content: space-evenly;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
 }
 
 .nav-img {
@@ -161,6 +200,7 @@ body {
     }
 
     .nav-wrap {
+        min-width: 250px;
         width: 250px;
         height: 100vh;
         border-top: none;
@@ -170,11 +210,16 @@ body {
     }
 
     .nav-head {
+        display: -webkit-box;
+        display: -ms-flexbox;
         display: flex;
     }
 
     .nav-links {
-        flex-direction: column;
+        -webkit-box-orient: vertical;
+        -webkit-box-direction: normal;
+            -ms-flex-direction: column;
+                flex-direction: column;
         border-top: none;
         width: 250px;
         height: 100%;
@@ -212,34 +257,44 @@ body {
 }
 
 .anim0 {
-    animation: 1.5s ease 0s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease 0s 1 slideIn forwards;
+            animation: 1.5s ease 0s 1 slideIn forwards;
 }
 .anim1 {
-    animation: 1.5s ease .25s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease .25s 1 slideIn forwards;
+            animation: 1.5s ease .25s 1 slideIn forwards;
 }
 .anim2 {
-    animation: 1.5s ease .5s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease .5s 1 slideIn forwards;
+            animation: 1.5s ease .5s 1 slideIn forwards;
 }
 .anim3 {
-    animation: 1.5s ease .75s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease .75s 1 slideIn forwards;
+            animation: 1.5s ease .75s 1 slideIn forwards;
 }
 .anim4 {
-    animation: 1.5s ease 1s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease 1s 1 slideIn forwards;
+            animation: 1.5s ease 1s 1 slideIn forwards;
 }
 .anim5 {
-    animation: 1.5s ease 1.25s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease 1.25s 1 slideIn forwards;
+            animation: 1.5s ease 1.25s 1 slideIn forwards;
 }
 .anim6 {
-    animation: 1.5s ease 1.5s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease 1.5s 1 slideIn forwards;
+            animation: 1.5s ease 1.5s 1 slideIn forwards;
 }
 .anim7 {
-    animation: 1.5s ease 1.75s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease 1.75s 1 slideIn forwards;
+            animation: 1.5s ease 1.75s 1 slideIn forwards;
 }
 .anim8 {
-    animation: 1.5s ease 2s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease 2s 1 slideIn forwards;
+            animation: 1.5s ease 2s 1 slideIn forwards;
 }
 .anim9 {
-    animation: 1.5s ease 2.25s 1 slideIn forwards;
+    -webkit-animation: 1.5s ease 2.25s 1 slideIn forwards;
+            animation: 1.5s ease 2.25s 1 slideIn forwards;
 }
 /* End Animations */
 
@@ -272,9 +327,15 @@ body {
 }
 
 .login-form {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
-    justify-content: space-around;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
+    -ms-flex-pack: distribute;
+        justify-content: space-around;
     height: auto;
     width: 80%;
     margin: 15px auto;
@@ -291,6 +352,7 @@ body {
 }
 
 .login-btn {
+    -webkit-appearance: none;
     margin-top: 10px;
     width: 100%;
     color: #eee;
@@ -303,6 +365,8 @@ body {
     font-weight: 900;
     letter-spacing: 1px;
     cursor: pointer;
+    -webkit-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
 }
 
@@ -314,13 +378,19 @@ body {
     width: 100%;
     margin-top: 75px;
     margin-bottom: 50px;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-evenly;
+    -webkit-box-pack: space-evenly;
+        -ms-flex-pack: space-evenly;
+            justify-content: space-evenly;
 }
 
 .form-text-bottom a {
     color: #eee;
     text-decoration: none;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
     transition: color 0.3s ease;
 }
 
@@ -335,14 +405,38 @@ body {
     }
 }
 
-@keyframes slideIn {
+@-webkit-keyframes slideIn {
     from {
         opacity: 0;
-        transform: translateY(15px);
+        -webkit-transform: translateY(15px);
+                transform: translateY(15px);
     }
     to {
         opacity: 1;
-        transform: translateY(0px);
+        -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        -webkit-transform: translateY(15px);
+                transform: translateY(15px);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translateY(0px);
+                transform: translateY(0px);
+    }
+}
+
+@-webkit-keyframes fadeOut {
+    from {
+        opacity: 1;
+    }
+    to {
+        opacity: 0;
     }
 }
 
@@ -355,14 +449,29 @@ body {
     }
 }
 
-@keyframes fadeUp {
+@-webkit-keyframes fadeUp {
     from {
         opacity: 0;
-        transform: translate(-50%, -40%);
+        -webkit-transform: translate(-50%, -40%);
+                transform: translate(-50%, -40%);
     }
     to {
         opacity: 1;
-        transform: translate(-50%, -50%);
+        -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
+    }
+}
+
+@keyframes fadeUp {
+    from {
+        opacity: 0;
+        -webkit-transform: translate(-50%, -40%);
+                transform: translate(-50%, -40%);
+    }
+    to {
+        opacity: 1;
+        -webkit-transform: translate(-50%, -50%);
+                transform: translate(-50%, -50%);
     }
 }
 
@@ -371,9 +480,13 @@ body {
 /* Profile */
 
 .profile-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
     width: 100%;
-    align-items: center;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .profile-img {
@@ -406,15 +519,25 @@ body {
 /* Forms */
 
 .form {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     margin-top: 15px;
     width: 100%;
 }
 
 .form-field {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: column;
+            flex-direction: column;
     margin: 13px 0px;
 }
 
@@ -423,7 +546,7 @@ body {
     width: 100%;
     overflow: hidden;
     border: 1px solid #393e46;
-    padding: .8rem 1.5rem;
+    padding: 1rem 1.5rem;
     font-size: .8rem;
     border-radius: 5px;
     background-color: #1f2125;
@@ -443,9 +566,16 @@ body {
 }
 
 .radio-group {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: row;
-    align-items: center;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+        -ms-flex-direction: row;
+            flex-direction: row;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .label {
@@ -455,11 +585,14 @@ body {
 }
 
 .btn {
+    -webkit-appearance: none;
     display: inline-block;
     padding: 1rem 1.75rem;
     border: none;
     background-color: #3ea180;
     font-size: .9rem;
+    -webkit-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
     cursor: pointer;
     margin-top: 13px;
@@ -469,11 +602,14 @@ body {
 }
 
 .btn-danger {
+    -webkit-appearance: none;
     display: inline-block;
     padding: 1rem 1.75rem;
     border: none;
     background-color: #c44848;
     font-size: .9rem;
+    -webkit-transition: background-color 0.3s ease;
+    -o-transition: background-color 0.3s ease;
     transition: background-color 0.3s ease;
     cursor: pointer;
     margin-top: 13px;
@@ -540,6 +676,8 @@ body {
     text-decoration: none;
     display: inline-block;
     color: #ccc;
+    -webkit-transition: color 0.3s ease;
+    -o-transition: color 0.3s ease;
     transition: color 0.3s ease;
     padding: 10px;
 }
@@ -555,8 +693,12 @@ body {
 .create-new-group-wrap {
     position: fixed;
     z-index: 999999999;
-    transform-origin: center center;
-    transform: translate(-50%, -50%);
+    -webkit-transform-origin: center center;
+        -ms-transform-origin: center center;
+            transform-origin: center center;
+    -webkit-transform: translate(-50%, -50%);
+        -ms-transform: translate(-50%, -50%);
+            transform: translate(-50%, -50%);
     min-width: 365px;
     top: 50%;
     left: 50%;
@@ -566,13 +708,19 @@ body {
     border: 1px solid #333;
     opacity: 0;
     display: none;
-    animation: fadeUp .8s ease forwards;
+    -webkit-animation: fadeUp .8s ease forwards;
+            animation: fadeUp .8s ease forwards;
 }
 
 .groups-wrap {
     width: 100%;
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    flex-direction: column-reverse;
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: column-reverse;
+            flex-direction: column-reverse;
 }
 
 .group-card {
@@ -583,12 +731,19 @@ body {
     border: 1px solid #393e46;
     padding: 1.5rem;
     border-radius: 15px;
+    height: auto;
 }
 
 .group-card-header {
+    display: -webkit-box;
+    display: -ms-flexbox;
     display: flex;
-    justify-content: space-between;
-    align-items: center;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
 }
 
 .group-name {
