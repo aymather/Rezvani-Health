@@ -77,6 +77,7 @@ app.use('/', require('./routes/getactivitydata'));
 app.use('/', require('./routes/getreadinessdata'));
 app.use('/', require('./routes/profile'));
 app.use('/', require('./routes/journal'));
+app.use('/', require('./routes/groups'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set(path.join(__dirname, 'views'));

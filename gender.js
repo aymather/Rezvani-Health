@@ -10,25 +10,32 @@ mongoose.connect(db, {useNewUrlParser: true})
         console.log(err);
     })
 
-// const user = new User({
-//     firstname: 'allll',
-//     lastname: 'mayther',
-//     gender: 'male',
-//     username: 'allll',
-//     password: '123',
+// User.findOne({ username: 'alecmather' })
+//     .then(user => {
+//         user.groups.forEach(group => {
+//             console.log(group);
+//             if(group._id == '5cf83ef73ef502c6d5828aa9'){
+//                 user.groups[group].remove();
+//             }
+//         })
+//     })
+//     .catch(err => {
+//         console.log(err);
+//     })
+// User.find({ _id: '5cf83ef73ef502c6d5828aa9' })
+//     .then(query => {
+//         console.log(query);
+//     })
+//     .catch(err => {
+//         console.log(err);
+//     })
 
-// })
-
-// console.log(user);
-
-// user.save();
-
-User.findOne({ username: 'al' })
+// User.update(
+//     { },
+//     { $pull: { _id: '5cf83ef73ef502c6d5828aa9' } },
+//     { multi: true }
+// )
+User.findOne({username:'alecmather'})
     .then(user => {
-        user.oura_api.oura_access_token = '123';
-        user.save();
+        console.log(user.groups);
     })
-    .catch(err => {
-        console.log(err);
-    })
-

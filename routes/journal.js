@@ -2,8 +2,9 @@ const express = require('express');
 const router = express.Router();
 const User = require('../config/models');
 const { ensureAuthenticated } = require('../config/auth');
-const IsWithinLevel = require('../backend_funcs/CalculateRMR').IsWithinLevel;
+const GetCaloricLevel = require('../backend_funcs/GetCaloricLevel');
 const getMetabolicType = require('../backend_funcs/GetMetabolicType');
+const get_macros = require('../backend_funcs/get_macros');
 
 router.get('/journal', ensureAuthenticated, (req, res) => {
     res.render('Journal', {
@@ -31,10 +32,13 @@ router.post('/journal', ensureAuthenticated, (req, res) => {
     BFP = parseFloat(bfp.replace('%', ''));
 
     // Get Caloric Level (1-11)
-    Caloric_Level = IsWithinLevel(RMR);
+    Caloric_Level = GetCaloricLevel(RMR);
 
     // Get Metabolic Type (Dual-Metabolism | Carbohydrate Efficient | Fat & Protein Efficient | None)
-    Metabolic_Type = getMetabolicType(req.user.gender, HDL, LDL, TC, Ratio, Trigs);
+    let Metabolic_Type = getMetabolicType(req.user.gender, HDL, LDL, TC, Ratio, Trigs);
+
+    // Get Macros based on metabolic type
+    let Macros = get_macros(Metabolic_Type);
 
     // Find user in database
     User.findOne({ username: req.user.username })
@@ -57,6 +61,7 @@ router.post('/journal', ensureAuthenticated, (req, res) => {
                 }
             });
             userdata.Metabolic_Type = Metabolic_Type;
+            userdata.Macros = Macros;
             userdata.save();
             res.render('Journal', {
                 user: userdata

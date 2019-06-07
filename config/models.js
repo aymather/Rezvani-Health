@@ -44,18 +44,49 @@ const DataEntry = new Schema({
     }
 })
 
+const GroupMemberSchema = new Schema({
+    signup_date: {
+        type: Object,
+        default: moment()
+    },
+    firstname: { type: String, required: true },
+    lastname: { type: String, require: true },
+    email: { type: String, required: true },
+    gender: { type: String, required: true },
+    birthday: { type: String, required: true },
+    medications: { type: String },
+    Metabolic_Type: { type: String },
+    Macros: {
+        carb: { type: Number },
+        protein: { type: Number },
+        fat: { type: Number }
+    },
+    data: [DataEntry],
+    oura_api: {
+        oura_access_token: { type: String },
+        oura_refresh_token: { type: String }
+    },
+    oura_userinfo: {
+        user_id: { type: String },
+        age: { type: Number },
+        weight: { type: Number },
+        gender: { type: String },
+        email: { type: String }
+    }
+})
+
+const GroupSchema = new Schema({
+    created: { type: Object, default: moment() },
+    name: { type: String, required: true },
+    members: [GroupMemberSchema]
+})
+
 const UserSchema = new Schema({
     firstname: {
         type: String,
         required: true
     },
     lastname: {
-        type: String
-    },
-    picture: {
-        type: String
-    },
-    status: {
         type: String
     },
     username: {
@@ -96,7 +127,8 @@ const UserSchema = new Schema({
     oura_api: {
         oura_access_token: { type: String },
         oura_refresh_token: { type: String }
-    }
+    },
+    groups: [GroupSchema]
 });
 
 const User = mongoose.model('users', UserSchema);

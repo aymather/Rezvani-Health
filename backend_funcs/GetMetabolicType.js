@@ -29,7 +29,7 @@ function getMetabolicType(gender, HDL, LDL, TC, Ratio, Trigs){
     sum += isWithinRange(TC, settings.DM.TC);
     sum += isWithinRange(Trigs, settings.DM.Trigs);
     if(sum >= 3){
-        return 'Dual-Metabolism';
+        let metabolic_type = 'Dual-Metabolism';
     }
 
     // Carbohydrate-Efficient (step 2)
@@ -38,7 +38,7 @@ function getMetabolicType(gender, HDL, LDL, TC, Ratio, Trigs){
     sum += isWithinRange(Ratio, settings.CE.Ratio);
     sum += isWithinRange(Trigs, settings.CE.Trigs);
     if(sum >= 2){
-        return 'Carbohydrate-Efficient';
+        let metabolic_type = 'Carbohydrate-Efficient';
     }
 
     // Fat & Protein Efficient (step 3)
@@ -47,14 +47,23 @@ function getMetabolicType(gender, HDL, LDL, TC, Ratio, Trigs){
     sum += isWithinRange(Ratio, settings.FPE.Ratio);
     sum += isWithinRange(Trigs, settings.FPE.Trigs);
     if(sum >= 2){
-        return 'Fat & Protein Efficient';
+        let metabolic_type = 'Fat & Protein Efficient';
     }
 
     if(HDL < 45 && Trigs > 140 && LDL > 130){
-        return 'Out of balance | Dual-Metabolism';
+        let metabolic_type = 'Out of balance | Dual-Metabolism';
     } else {
-        return 'Does not meet any criteria.';
+        let metabolic_type = 'Does not meet any criteria.';
     }
+    if(metabolic_type){
+
+        return metabolic_type;
+
+    } else {
+        console.log('Error getting metabolic type.')
+        return {}
+    }
+
 }
 
 module.exports = getMetabolicType;

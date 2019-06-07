@@ -4,7 +4,7 @@ const oura = require('oura');
 
 router.get('/getreadinessdata', (req, res) => {
     let client = new oura.Client(req.user.oura_api.oura_access_token);
-    client.readiness('2018-10-26', '2018-11-1')
+    client.readiness('2019-6-3', '2019-6-3')
         .then(readinessdata => {
             console.log(readinessdata);
         })
