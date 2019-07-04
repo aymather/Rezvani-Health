@@ -6,7 +6,6 @@
     padding: 0;
     -webkit-box-sizing: border-box;
             box-sizing: border-box;
-    font-family: 'Quicksand', sans-serif;
     text-decoration: none;
 }
 
@@ -60,6 +59,24 @@ body {
         -ms-flex-positive: 1;
             flex-grow: 1;
     height: 90vh;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+input {
+    font-family: 'Quicksand';
+}
+
+.title-text {
+    text-align: center;
+    font-family: 'PT Sans';
+    color: #fff;
 }
 
 .highlight {
@@ -129,6 +146,31 @@ body {
 
 .alert-btn:hover {
     color: rgba(255, 0, 0, 0.838);
+}
+
+.field-alert {
+    max-width: 645px;
+    width: 100%;
+    padding: .5rem 1rem;
+    margin: 15px 0px;
+    color: #eee;
+    border-radius: 5px;
+    display: flex;
+    -webkit-box-pack: justify;
+        -ms-flex-pack: justify;
+            justify-content: space-between;
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: reverse;
+        -ms-flex-direction: row-reverse;
+            flex-direction: row-reverse;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+}
+
+.field-alert-danger {
+    background-color: rgba(255, 0, 0, 0.29);
+    border: 1px solid rgba(255, 0, 0, 0.838);
 }
 
 /* End Partials */
@@ -352,6 +394,14 @@ body {
     margin: 10px 0;
 }
 
+.login-input-date {
+    width: 250px;
+    border: 1px solid #000;
+    border-radius: 5px;
+    padding: 15px 25px;
+    font-size: .8rem;
+}
+
 .login-btn {
     -webkit-appearance: none;
     margin-top: 10px;
@@ -535,10 +585,8 @@ body {
     display: -webkit-box;
     display: -ms-flexbox;
     display: flex;
-    -webkit-box-orient: vertical;
-    -webkit-box-direction: normal;
-        -ms-flex-direction: column;
-            flex-direction: column;
+        -ms-flex-direction: row;
+            flex-direction: row;
     margin: 13px 0px;
 }
 
@@ -579,10 +627,16 @@ body {
             align-items: center;
 }
 
-.label {
+.radio-label {
     display: inline-block;
     color: rgb(130, 130, 130);
     margin-left: 1rem;
+}
+
+.label {
+    color: rgb(130, 130, 130);
+    margin: 15px 15px 15px 0px;
+    display: inline-block;
 }
 
 .btn {
@@ -666,12 +720,6 @@ body {
 /* End Card */
 
 /* Dashboard */
-
-.dashboard-header {
-    padding: .8rem;
-    color: #fff;
-    font-family: 'PT Sans';
-}
 
 .oura-link {
     text-decoration: none;
@@ -758,3 +806,25 @@ body {
 }
 
 /* End Group */
+
+/* Finished Member */
+
+.finished-member-wrap {
+    background-color: #30303d;
+    width: 100%;
+    min-height: 100vh;
+}
+
+.finished-member-title {
+    text-align: center;
+    color: #fff;
+    font-family: 'PT Sans';
+    letter-spacing: 1px;
+}
+
+#chartdiv {
+    width: 100%;
+    height: 100px;
+}
+
+/* End Finished Member */

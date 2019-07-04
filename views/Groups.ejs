@@ -8,13 +8,13 @@
                     <div class='group-card-header'>
                         <h1 class='group-name'>Group Name: <span class='highlight'><%= user.groups[i].name %></span></h1>
                         <div class='group-card-btn-wrap'>
-                            <a href='#' class='btn'>View</a>
-                            <a href='#' class='btn-danger'>Delete</a>
+                            <a href='/groups/view/<%= user.groups[i]._id %>' class='btn'>View</a>
+                            <a href='/groups/delete/<%= user.groups[i]._id %>' class='btn-danger'>Delete</a>
                         </div>
                     </div>
                     <% if(user.groups[i].members) { %>
-                        <% for(let i=0;i<user.groups[i].members.length;i++) { %>
-                            <p class='group-card-member-text'><%= user.groups[i].members[i]%></p>
+                        <% for(let it=0;it<user.groups[i].members.length;it++) { %>
+                            <p class='group-card-member-text'><%= user.groups[i].members[it]%></p>
                         <% } %>
                     <% } %>
                 </div>
@@ -24,14 +24,14 @@
 </div>
 
 <form action='/groups'
-      method='POST'
-      id='create-group-form'
-      class='create-new-group-wrap'>
+        method='POST'
+        id='create-group-form'
+        class='create-new-group-wrap'>
     
     <input type="text" 
-           class='form-field-input' 
-           placeholder='Group Name' 
-           name='group_name'>
+            class='form-field-input' 
+            placeholder='Group Name' 
+            name='group_name'>
         
     <button type='submit' class='btn'>Submit</button>
     <div class='btn-danger' id='btn-danger'>Cancel</div>
@@ -53,3 +53,5 @@
         form.style.display = 'none';
     })
 </script>
+
+

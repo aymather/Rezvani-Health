@@ -1,0 +1,336 @@
+/* General */
+
+* {
+  margin: 0;
+  padding: 0;
+  -webkit-box-sizing: border-box;
+          box-sizing: border-box;
+  text-decoration: none;
+}
+
+body {
+  height: 100vh;
+  width: 100vw;
+}
+
+:focus {
+  outline: none;
+}
+
+#root, .App {
+  width: 100%;
+  height: 100%;
+}
+
+/* End General */
+
+/* Layout */
+
+.layout {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: reverse;
+      -ms-flex-direction: column-reverse;
+          flex-direction: column-reverse;
+  width: 100%;
+  height: 100%;
+  background-color: #232931;
+}
+
+.wrap {
+  padding: 50px 60px 0px 60px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  overflow-y: scroll;
+  -webkit-box-flex: 1;
+      -ms-flex-positive: 1;
+          flex-grow: 1;
+  height: 90vh;
+}
+
+p,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+div,
+input {
+  font-family: 'Quicksand';
+}
+
+.title-text {
+  text-align: center;
+  font-family: 'PT Sans';
+  color: #fff;
+}
+
+.highlight {
+  color: #4ecca3;
+}
+
+@media screen and (min-width: 560px) {
+  .layout {
+      -webkit-box-orient: horizontal;
+      -webkit-box-direction: normal;
+          -ms-flex-direction: row;
+              flex-direction: row;
+  }
+  .wrap {
+      height: 100%;
+  }
+}
+
+/* End Layout */
+
+/* Animations */
+.anim0,
+.anim1,
+.anim2,
+.anim3,
+.anim4,
+.anim5,
+.anim6,
+.anim7,
+.anim8,
+.anim9 {
+    opacity: 0;
+}
+
+.anim0 {
+    -webkit-animation: 1.5s ease 0s 1 slideIn forwards;
+            animation: 1.5s ease 0s 1 slideIn forwards;
+}
+.anim1 {
+    -webkit-animation: 1.5s ease .25s 1 slideIn forwards;
+            animation: 1.5s ease .25s 1 slideIn forwards;
+}
+.anim2 {
+    -webkit-animation: 1.5s ease .5s 1 slideIn forwards;
+            animation: 1.5s ease .5s 1 slideIn forwards;
+}
+.anim3 {
+    -webkit-animation: 1.5s ease .75s 1 slideIn forwards;
+            animation: 1.5s ease .75s 1 slideIn forwards;
+}
+.anim4 {
+    -webkit-animation: 1.5s ease 1s 1 slideIn forwards;
+            animation: 1.5s ease 1s 1 slideIn forwards;
+}
+.anim5 {
+    -webkit-animation: 1.5s ease 1.25s 1 slideIn forwards;
+            animation: 1.5s ease 1.25s 1 slideIn forwards;
+}
+.anim6 {
+    -webkit-animation: 1.5s ease 1.5s 1 slideIn forwards;
+            animation: 1.5s ease 1.5s 1 slideIn forwards;
+}
+.anim7 {
+    -webkit-animation: 1.5s ease 1.75s 1 slideIn forwards;
+            animation: 1.5s ease 1.75s 1 slideIn forwards;
+}
+.anim8 {
+    -webkit-animation: 1.5s ease 2s 1 slideIn forwards;
+            animation: 1.5s ease 2s 1 slideIn forwards;
+}
+.anim9 {
+    -webkit-animation: 1.5s ease 2.25s 1 slideIn forwards;
+            animation: 1.5s ease 2.25s 1 slideIn forwards;
+}
+
+@-webkit-keyframes slideIn {
+  from {
+      opacity: 0;
+      -webkit-transform: translateY(15px);
+              transform: translateY(15px);
+  }
+  to {
+      opacity: 1;
+      -webkit-transform: translateY(0px);
+              transform: translateY(0px);
+  }
+}
+
+@keyframes slideIn {
+  from {
+      opacity: 0;
+      -webkit-transform: translateY(15px);
+              transform: translateY(15px);
+  }
+  to {
+      opacity: 1;
+      -webkit-transform: translateY(0px);
+              transform: translateY(0px);
+  }
+}
+
+@-webkit-keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
+@keyframes fadeOut {
+  from {
+      opacity: 1;
+  }
+  to {
+      opacity: 0;
+  }
+}
+
+@-webkit-keyframes fadeUp {
+  from {
+      opacity: 0;
+      -webkit-transform: translate(-50%, -40%);
+              transform: translate(-50%, -40%);
+  }
+  to {
+      opacity: 1;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+  }
+}
+
+@keyframes fadeUp {
+  from {
+      opacity: 0;
+      -webkit-transform: translate(-50%, -40%);
+              transform: translate(-50%, -40%);
+  }
+  to {
+      opacity: 1;
+      -webkit-transform: translate(-50%, -50%);
+              transform: translate(-50%, -50%);
+  }
+}
+/* End Animations */
+
+/* Login */
+
+.login-wrap {
+  height: 100vh;
+  width: 100%;
+  text-align: center;
+  padding-top: 70px;
+  padding-bottom: 15px;
+  overflow-y: scroll;
+}
+
+.logo-icon {
+  width: 50px;
+  height: auto;
+}
+
+.logo-svg {
+  fill: #eee;
+}
+
+.login-title {
+  font-family: 'PT Sans';
+  color: #4ecca3;
+  letter-spacing: 1px;
+}
+
+.login-form {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  height: auto;
+  width: 80%;
+  max-width: 520px;
+  margin: 15px auto;
+}
+
+.login-input {
+  border: none;
+  color: rgb(130, 130, 130);
+  padding: 1rem 2rem;
+  border-radius: 5px;
+  background-color: rgba(0, 0, 0, 0.2);
+  font-size: 1.15rem;
+  margin: 10px 0;
+}
+
+.login-input-date {
+  width: 250px;
+  border: 1px solid #000;
+  border-radius: 5px;
+  padding: 15px 25px;
+  font-size: .8rem;
+}
+
+.login-btn {
+  -webkit-appearance: none;
+  margin-top: 10px;
+  width: 100%;
+  color: #eee;
+  background-color: #4ecca3;
+  padding: 1rem 2rem;
+  border: none;
+  border-radius: 5px;
+  font-family: 'PT Sans';
+  font-size: 1rem;
+  font-weight: 900;
+  letter-spacing: 1px;
+  cursor: pointer;
+  -webkit-transition: background-color 0.3s ease;
+  -o-transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease;
+}
+
+.login-btn:hover {
+  background-color: #45b48f;
+}
+
+.form-text-bottom {
+  width: 100%;
+  margin-top: 75px;
+  margin-bottom: 50px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+}
+
+.form-text-bottom a {
+  display: inline-block;
+  margin-left: 25px;
+  margin-right: 25px;
+  color: #eee;
+  text-decoration: none;
+  -webkit-transition: color 0.3s ease;
+  -o-transition: color 0.3s ease;
+  transition: color 0.3s ease;
+}
+
+.form-text-bottom a:hover {
+  color: #4ecca3;
+}
+
+@media screen and (min-width: 560px) {
+  .login-wrap {
+      margin: auto;
+  }
+}
+
+/* End Login */

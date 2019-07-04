@@ -7,6 +7,15 @@
     <% }); %>
 <% } %>
 
+<% if(typeof fieldMessages != 'undefined') { %>
+    <% fieldMessages.forEach((error) => { %>
+        <div class="field-alert field-alert-danger">
+            <button type="button" class="alert-btn">x</button>
+            <%= error.msg %>
+        </div>
+    <% }); %>
+<% } %>
+
 <% if(success_msg != '') { %>
     <div class="alert alert-success anim1">
         <button type="button" class="alert-btn">x</button>

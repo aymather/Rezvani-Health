@@ -18,7 +18,7 @@ function getMetabolicType(gender, HDL, LDL, TC, Ratio, Trigs){
     if(gender === 'male' || gender === 'other'){
         settings = require('../config/keys').MaleMetablicSettings;
     } else if (gender === 'female') {
-        settings = require('../config/keys').FemaleMetablicSettings;
+        settings = require('../config/keys').FemaleMetabolicSettings;
     } else {
         console.log('Invalid gender type.');
     }

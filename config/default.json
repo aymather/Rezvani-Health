@@ -1,0 +1,3 @@
+{
+    "jwtSecret": "json_token_secret"
+}

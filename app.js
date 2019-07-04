@@ -8,13 +8,9 @@ const db = require('./config/keys').mongoURI;
 const mongoose = require('mongoose');
 const flash = require('connect-flash');
 const session = require('express-session');
-const passport = require('passport');
 
 // Init App
 const app = express();
-
-// Passport config
-require('./config/passport')(passport);
 
 // Connect to DataBase
 mongoose.connect(db, {useNewUrlParser: true})
@@ -40,10 +36,6 @@ app.use(session({
     saveUninitialized: true
 }));
 
-// Passport sessions
-app.use(passport.initialize());
-app.use(passport.session());
-
 // Connect Flash
 app.use(flash());
 
@@ -62,22 +54,12 @@ app.locals.moment = moment;
 app.locals.shortDateFormat = shortDateFormat;
 
 // Set routs directory
-app.use('/', require('./routes/rmrcalculator'));
 app.use('/', require('./routes/home'));
-app.use('/', require('./routes/createprofile'));
-app.use('/', require('./routes/database'));
-app.use('/', require('./routes/writeentry'));
 app.use('/', require('./routes/login'));
 app.use('/', require('./routes/register'));
 app.use('/', require('./routes/logout'));
-app.use('/', require('./routes/dashboard'));
-app.use('/', require('./routes/auth'));
-app.use('/', require('./routes/getsleepdata'));
-app.use('/', require('./routes/getactivitydata'));
-app.use('/', require('./routes/getreadinessdata'));
-app.use('/', require('./routes/profile'));
-app.use('/', require('./routes/journal'));
 app.use('/', require('./routes/groups'));
+app.use('/', require('./routes/newmember'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 app.set(path.join(__dirname, 'views'));
