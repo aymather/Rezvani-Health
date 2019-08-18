@@ -5,10 +5,6 @@ const bcrypt = require('bcryptjs');
 const config = require('config');
 const jwt = require('jsonwebtoken');
 
-router.get('/register', (req, res) => {
-    res.render('Register');
-})
-
 router.post('/register', (req, res) => {
     const { firstname, lastname, username, email, password, password2 } = req.body;
 
@@ -26,7 +22,6 @@ router.post('/register', (req, res) => {
     if (password.length < 6){
         return res.status(400).json({ msg: "Password must be at least 6 characters." })
     }
-
     // Check if email or username already exists
     User.findOne({$or: [{ username: username }, { email: email }] })
         .then(user => {
@@ -40,14 +35,14 @@ router.post('/register', (req, res) => {
                     lastname: lastname,
                     username: username,
                     email: email,
-                    password: password
+                    password: password,
+                    groups: []
                 })
-
                 // Encrypt the password
                 bcrypt.genSalt(10, (err, salt) => {
-                    if(err) throw err;
+                    if(err) return res.status(500).json({ msg: "Internal server error"});
                     bcrypt.hash(newUser.password, salt, (err, hash) => {
-                        if(err) throw err;
+                        if(err) return res.status(500).json({ msg: "Internal server error"});
 
                         // Set password to hash
                         newUser.password = hash;
@@ -61,11 +56,10 @@ router.post('/register', (req, res) => {
                                     config.get('jwtSecret'),
                                     { expiresIn: 3600 },
                                     (err, token) => {
-                                        if(err) throw err;
-
-                                        res.json({
+                                        if(err) return res.status(500).json({ msg: "Internal server error"});
+                                        return res.json({
+                                            token,
                                             user: {
-                                                token,
                                                 id: user.id,
                                                 username: user.username,
                                                 firstname: user.firstname,
@@ -77,14 +71,14 @@ router.post('/register', (req, res) => {
                                 )
                             })
                             .catch(err => {
-                                res.json({ msg: 'There was a problem saving the new user' });
+                                res.status(500).json({ msg: 'There was a problem saving the new user' });
                             })
                     })
                 })
             }
         })
-        .catch(error => {
-            throw error;
+        .catch(() => {
+            res.status(500).json({ msg: "Internal server error."});
         })
 })
 

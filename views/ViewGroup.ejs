@@ -1,9 +1,0 @@
-<div class="layout">
-    <% include ./Navigation %>
-    <div class="wrap">
-        <a href='/groups/view/<%= group._id %>/createmember' class="btn">Create New Member +</a>
-        <% for(let i=0; i<group.members.length; i++){ %>
-            <p><%= group.members[i] %></p>
-        <% } %>
-    </div>
-</div>

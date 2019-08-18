@@ -1,65 +1,117 @@
 const express = require('express');
 const router = express.Router();
-const get_data = require('../backend_funcs/get_data');
+const User = require('../config/models');
+const authMiddleware = require('../middleware/auth');
 
-router.get('/groups', (req, res) => {
-    res.render('Groups', {
-        user: req.user
-    });
-})
-
-router.post('/groups', (req, res) => {
-
-    let { group_name } = req.body;
-    
-    req.user.groups.push({
-        name: group_name
-    })
-    
-    req.user.save((err, user) => {
-    
-        // Handle error
-        if(err) { console.log(err) };
-
-        // Render
-    res.render('Groups', {
-            user: user
-    })
-
-    });
-    
+router.get('/getgroups', authMiddleware, (req, res) => {
+    User.findById(req.user.id)
+        .then(user => {
+            var group_data = user.groups.map(group => {
+                return {
+                    members: group.members,
+                    name: group.name,
+                    id: group._id
+                }
+            })
+            res.json(group_data.reverse());
+        })
+        .catch(() => {
+            res.status(500).json({ msg: "Internal server error"});
+        })
     
 })
 
-router.get('/groups/view/:group_id', (req, res) => {
-    
-    var { group_id } = req.params,
-        group_view;
+router.post('/addgroup', authMiddleware, (req, res) => {
 
-    req.user.groups.map(group => {
-        if(group._id == group_id){
-            group_view = group;
-        }
+    const { group_name } = req.body;
+    User.findById(req.user.id)
+        .then(user => {
+            user.groups.push({ name: group_name });
+            user.save()
+                .then(savedUser => {
+                    // Get the group we just saved
+                    var newGroup = savedUser.groups[savedUser.groups.length-1];
+                    res.json({
+                        members: newGroup.members,
+                        name: newGroup.name,
+                        id: newGroup._id
+                    })
+                })
+                .catch(() => {
+                    res.status(500).json({ msg: "Error saving new group"});
+                })
+        })
+        .catch(() => {
+            res.status(500).json({ msg: "Internal server error"});
+        })
+
 })
 
-    res.render('ViewGroup', {
-        user: req.user,
-        group: group_view
-    })
+router.post('/removegroup', authMiddleware, (req, res) => {
+
+    const { group_id } = req.body;
+    User.findById(req.user.id)
+        .then(user => {
+            // Remove that id from any clients part of it
+            for(id of user.groups.id(group_id).members){
+                user.clients.id(id).groups = user.clients.id(id).groups.filter(each_id => each_id !== group_id);
+            }
+
+            // Remove group model
+            user.groups.id(group_id).remove();
+            user.save()
+                .then(() => {
+                    res.json({ id: group_id });
+                })
+                .catch(() => {
+                    res.status(500).json({ msg: "Internal server error"});
+                })
+        })
+        .catch(() => {
+            res.status(500).json({ msg: "Internal server error"});
+        })
+
 })
 
-router.get('/groups/delete/:group_id', (req, res) => {
+router.post('/editGroupMembers', authMiddleware, (req, res) => {
+    const { group_id, member_status } = req.body;
 
-    // Extract group_id from url
-    let { group_id } = req.params;
-    req.user.groups._id[group_id].remove();
-    for(group in req.user.groups){
-        console.log(group);
-        if(group._id == group_id){
-            group.remove();
-        }
-    }
+    User.findById(req.user.id)
+        .then(user => {
+            var group = user.groups.id(group_id);
+            for(var [id, status] of Object.entries(member_status)){
 
+                // Add/remove that group to the client's 'group' list
+                if(status && user.clients.id(id).groups.indexOf(group_id) === -1){
+                    // If the group should exist in their array and it doesn't, add it
+                    user.clients.id(id).groups.push(group_id);
+                } else if(!status && user.clients.id(id).groups.indexOf(group_id) !== -1){
+                    // If the group shouldn't exist in the array and it does, remove it
+                    var new_group_list = user.clients.id(id).groups.filter(each_id => each_id !== group_id);
+                    user.clients.id(id).groups = new_group_list;
+                }
+
+                // Edit group client_id list
+                if(status && group.members.indexOf(id) === -1){
+                    user.groups.id(group_id).members.push(id);
+                } else if(!status && group.members.indexOf(id) !== -1) {
+                    var new_member_list = user.groups.id(group_id).members.filter(each_id => each_id !== id);
+                    user.groups.id(group_id).members = new_member_list;
+                }
+            }
+
+            // Save
+            user.save()
+                .then(() => {
+                    res.status(200).json({ msg: "Success!" });
+                })
+                .catch(() => {
+                    res.status(500).json({ msg: "Internal server error" });
+                })
+        })
+        .catch(() => {
+            res.status(500).json({ msg: "Internal server error" });
+        })
 })
 
 module.exports = router;

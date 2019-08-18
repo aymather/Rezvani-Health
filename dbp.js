@@ -1,16 +1,12 @@
-const mongoose = require('mongoose');
 const db = require('./config/keys').mongoURI;
+const mongoose = require('mongoose');
 const User = require('./config/models');
-const Schema = mongoose.Schema;
 
-mongoose.connect(db, {useNewUrlParser: true})
-    .then(async () => {
-        console.log("Connected to db...");
+(async () => {
 
-        const user = await User.findOne({username: 'alecmather'});
+    await mongoose.connect(db, { useNewUrlParser: true });
+    
+    var users = await User.find();
+    console.log(users);
 
-        user.groups[0].members[0].getSummary();
-    })
-    .catch(err => {
-        console.log(err);
-    })
+})()

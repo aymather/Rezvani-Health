@@ -1,3 +1,4 @@
+// Auth
 export const USER_LOADING = 'USER_LOADING';
 export const USER_LOADED = 'USER_LOADED';
 export const AUTH_ERROR = 'AUTH_ERROR';
@@ -6,5 +7,39 @@ export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
 export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
 export const REGISTER_FAIL = 'REGISTER_FAIL';
+
+// Error
 export const GET_ERRORS = 'GET_ERRORS';
 export const CLEAR_ERRORS = 'CLEAR_ERRORS';
+
+// Group
+export const GET_GROUPS = 'GET_GROUPS';
+export const GROUPS_LOADING = 'GROUPS_LOADING';
+export const GROUPS_FAIL = 'GROUPS_FAIL';
+export const ADD_GROUP = 'ADD_GROUP';
+export const REMOVE_GROUP = 'REMOVE_GROUP';
+export const ADD_GROUP_FAIL = 'ADD_GROUP_FAIL';
+export const REMOVE_GROUP_FAIL = 'REMOVE_GROUP_FAIL';
+
+// Group Stage
+export const GROUP_STAGE = 'GROUP_STAGE';
+export const GROUP_STAGE_LOADING = 'GROUP_STAGE_LOADING';
+export const GROUP_STAGE_FAIL = 'GROUP_STAGE_FAIL';
+
+// Member
+export const ADD_MEMBER = 'ADD_MEMBER';
+export const REMOVE_MEMBER = 'REMOVE_MEMBER';
+export const MEMBERS_LOADED = 'MEMBERS_LOADED';
+export const MEMBERS_LOADING = 'MEMBERS_LOADING';
+export const MEMBERS_FAIL = 'MEMBERS_FAIL';
+
+// Clients
+export const ADD_CLIENT = 'ADD_CLIENT';
+export const REMOVE_CLIENT = 'REMOVE_CLIENT';
+export const CLIENTS_FAIL = 'CLIENTS_FAIL';
+export const CLIENTS_SUCCESS = 'CLIENTS_SUCCESS';
+export const CLIENTS_LOADING = 'CLIENTS_LOADING';
+export const CLIENT_OURA_DATA = 'CLIENT_OURA_DATA';
+export const CLIENT_OURA_DATA_LOADING = 'CLIENT_OURA_DATA_LOADING';
+export const CLIENT_OURA_FAIL = 'CLIENT_OURA_FAIL';
+export const OURA_NOT_AUTHORIZED = 'OURA_NOT_AUTHORIZED';

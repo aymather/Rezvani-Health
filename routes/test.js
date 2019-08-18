@@ -1,9 +1,8 @@
 const express = require('express');
 const router = express.Router();
-const authMiddleware = require('../middleware/auth');
 
-router.get('/testchart', authMiddleware, (req, res) => {
-    res.json({ msg: "Request succeeded!"});
+router.get('/testchart', (req, res) => {
+    res.redirect('http://localhost:3000');
 })
 
 module.exports = router;

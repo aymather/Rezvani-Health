@@ -1,7 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
 const moment = require('moment');
-const get_member_data = require('./model_methods').get_member_data;
 
 // Copy of Oura Activity API response
 const ActivitySchema = new Schema({
@@ -100,25 +99,27 @@ const DataEntry = new Schema({
         TC: { type: Number },
         Ratio: { type: Number },
         Trigs: { type: Number },
-        BFP: { type: Number },
+        Body_Fat_Percentage: { type: Number },
+        Blood_Glucose: { type: Number },
         Weight: { type: Number },
         Caloric_Level: { type: Number },
         Hemoglobin: { type: Number }
     }
 })
 
-const GroupMemberSchema = new Schema({
+const ClientSchema = new Schema({
     signup_date: {
         type: Object,
         default: moment()
     },
     firstname: { type: String, required: true },
-    lastname: { type: String, require: true },
+    lastname: { type: String, required: true },
     email: { type: String, required: true },
     gender: { type: String, required: true },
     birthday: { type: String, required: true },
     medications: { type: String },
     Metabolic_Type: { type: String },
+    Water_Intake: { type: Number },
     Macros: {
         carb: { type: Number },
         protein: { type: Number },
@@ -136,20 +137,16 @@ const GroupMemberSchema = new Schema({
         gender: { type: String },
         email: { type: String }
     },
+    groups: { type: Array },
     readiness: [ReadinessSchema],
     sleep: [SleepSchema],
     activity: [ActivitySchema]
 })
 
-// Returns a sorted array of data from our database
-// If any part of the data doesn't exist in our database,
-// then just let getOuraData() make API request and handle the rest
-GroupMemberSchema.methods.get_data = get_member_data;
-
 const GroupSchema = new Schema({
     created: { type: Object, default: moment() },
     name: { type: String, required: true },
-    members: [GroupMemberSchema]
+    members: { type: Array }
 })
 
 const UserSchema = new Schema({
@@ -162,8 +159,9 @@ const UserSchema = new Schema({
         type: Object,
         default: moment()
     },
-    groups: [GroupSchema]
+    groups: [GroupSchema],
+    clients: [ClientSchema]
 });
 
-const User = mongoose.model('users', UserSchema);
+const User = mongoose.model('User', UserSchema, 'users');
 module.exports = User;

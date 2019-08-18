@@ -8,10 +8,10 @@ import {
     FormGroup,
     Label,
     Input,
-    NavLink,
-    Alert
+    NavLink
 } from 'reactstrap';
 import { connect } from 'react-redux';
+import { register } from '../actions/authActions';
 
 class Register extends Component {
     state = {
@@ -47,6 +47,7 @@ class Register extends Component {
             password2
         }
         // Attempt to register the new user
+        this.props.register(newUser);
     }
     render() {
         return (
@@ -126,4 +127,12 @@ class Register extends Component {
     }
 }
 
-export default Register;
+const mapStateToProps = state => ({
+    isAuthenticated: state.user.isAuthenticated,
+    error: state.error
+})
+
+export default connect(
+    mapStateToProps,
+    { register }
+)(Register);

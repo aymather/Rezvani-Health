@@ -4,20 +4,19 @@ const User = require('../config/models');
 const bcrypt = require('bcryptjs');
 const jwt = require('jsonwebtoken');
 const config = require('config');
-const authMiddleware = require('../middleware/auth');
 
 router.post('/login', (req, res) => {
     
     const { username, password } = req.body;
-
     if(!username || !password){
         return res.status(400).json({ msg: "Please enter all fields" });
     }
 
     User.findOne({ username })
         .then(user => {
+            
             if(!user) return res.status(400).json({ msg: "User does not exist" });
-        
+
             // Validate password
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
@@ -28,7 +27,7 @@ router.post('/login', (req, res) => {
                         config.get('jwtSecret'),
                         { expiresIn: 3600 },
                         (err, token) => {
-                            if(err) throw err;
+                            if(err) return res.status(500).json({msg: "Internal server error."});
                             res.json({
                                 token,
                                 user: {
@@ -36,7 +35,8 @@ router.post('/login', (req, res) => {
                                     username: user.username,
                                     firstname: user.firstname,
                                     lastname: user.lastname,
-                                    email: user.email
+                                    email: user.email,
+                                    groups: user.groups
                                 }
                             })
                         }
@@ -50,17 +50,6 @@ router.post('/login', (req, res) => {
             return res.status(500).json({ msg: "Internal server error"});
         })
     
-})
-
-router.get('/user', authMiddleware, (req, res) => {
-    User.findById(req.user.id)
-        .select('-password')
-        .then(user => {
-            res.json(user);
-        })
-        .catch(err => {
-            res.status(500).json({ data: "Interal server error" })
-        })
 })
 
 module.exports = router;

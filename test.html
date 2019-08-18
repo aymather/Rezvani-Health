@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        #chartdiv {
+            width: 100%;
+            height: 500px;
+        }
+        body {
+            background-color: #333;
+        }
+    </style>
+</head>
+<body>
+    
+    <canvas id='line-chart' width='100' height='50'></canvas>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+    <script>
+        var labels = [];
+        var values = [null, 72, 69, 68, 68, 68, 66, 66, 66, 66, 65, 66, 66, 64, 63, 68, 68, 68, 68, 64, 64, 64, 66, 64, 63, 65, 65, 61, 62, 66, 66, 64, 62, 69, 72, 65, 67, 62, 61, 59, 61, 63, 65, 60, 62, 63, 62, 63, 63, 64, 66, 64, null, 71, 72, 63, 63, null, 61, 62, 64, 62, 62, 64, 62, 63, 65, 63, 61, 60, 64, 69, 62, 62, 68, 72, 64, 62, 65, 69, 64, null];
+
+        // Set up data
+        var sleep_array = values;
+        var start = "00:05";
+        var end = "06:51";
+        var labels = new Array(sleep_array.length);
+
+        // Create array of labels
+        for(let i=0;i<labels.length;i++) labels[i]='';
+        labels[0] = start;
+        labels[labels.length-1] = end;
+
+        // Convert values of 0 to null for graph gaps
+        for(let i=0;i<sleep_array.length;i++)if(sleep_array[i]===0)sleep_array[i]=null;
+
+        var ctx = document.getElementById('line-chart');
+        new Chart(ctx, {
+            type: 'line',
+            data: {
+                labels: labels,
+                datasets: [
+                    {
+                        data: values,
+                        borderColor: "rgba(0, 90, 290, 0.4)",
+                        fill: false,
+                        spanGaps: false
+                    }
+                ]
+            },
+            options: {
+                legend: {
+                    display: false
+                },
+                elements: {
+                    point: {
+                        radius: 0
+                    }
+                },
+                title: {
+                    display: true,
+                    text: "My title",
+                    fontColor: "rgba(0, 75, 250, 0.55)",
+                    fontSize: 32,
+                    fontFamily: 'Roboto'
+                }
+            }
+        })
+    </script>
+</body>
+</html>
