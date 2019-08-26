@@ -31,9 +31,13 @@ app.use('/', require('./routes/retreats'));
 
 app.use(express.static(path.join(__dirname, 'public')));
 
+console.log("Able to log");
+console.log(process.env.NODE_ENV);
 if(process.env.NODE_ENV === 'production'){
+    console.log("We should be serving files");
     app.use(express.static('client/build'));
-
+    console.log('Path is: ');
+    console.log(path);
     app.get('*', (req, res) => {
         res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
     })

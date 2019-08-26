@@ -5,7 +5,7 @@
   "main": "app.js",
   "scripts": {
     "client-install": "npm install --prefix client",
-    "start": "nodemon app",
+    "start": "node app",
     "app": "nodemon app",
     "client": "npm start --prefix client",
     "dev": "concurrently 'npm start' 'npm run client'",
