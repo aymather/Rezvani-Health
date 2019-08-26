@@ -6,19 +6,25 @@ import {
     AUTH_ERROR,
     LOGIN_SUCCESS,
     LOGIN_FAIL,
-    LOGOUT_SUCCESS,
-    REGISTER_SUCCESS,
-    REGISTER_FAIL
+    LOGOUT_SUCCESS
 } from './types';
 
 // Check token & load user
-export const loadUser = () => (dispatch, getState) => {
+export const loadUser = (history) => (dispatch, getState) => {
 
     // User loading
     dispatch({ type: USER_LOADING });
 
+    const config = {
+        url: '/user',
+        method: 'GET',
+        headers: getHeaders(getState)
+    }
+
+    if(config.headers.retreat_id.length === 0) history.push('/retreats');
+
     // Make request to backend api
-    axios.get('/user', tokenConfig(getState))
+    axios(config)
         .then(res => dispatch({
             type: USER_LOADED,
             payload: res.data
@@ -35,17 +41,14 @@ export const logout = () => dispatch => {
 }
 
 // Log user in
-export const login = ({ username, password }) => dispatch => {
+export const login = password => dispatch => {
     dispatch({ type: USER_LOADING });
 
     const config = {
-        method: 'post',
+        method: 'POST',
         url: '/login',
         headers: { 'Content-Type': 'application/json' },
-        data: {
-            username,
-            password
-        }
+        data: { password }
     }
 
     axios(config)
@@ -56,64 +59,21 @@ export const login = ({ username, password }) => dispatch => {
             })
         })
         .catch(err => {
-            if(err.response){
-                dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
-            } else {
-                console.log(err);
-            }
+            dispatch(returnErrors(err.response.data, err.response.status, 'LOGIN_FAIL'));
             dispatch({ type: LOGIN_FAIL });
         })
 }
 
-// Register a new user
-export const register = ({ firstname, lastname, username, email, password, password2}) => dispatch => {
-
-    dispatch({ type: USER_LOADING });
-
-    const config = {
-        method: 'post',
-        url: '/register',
-        headers: { "Content-Type": "application/json" },
-        data: {
-            firstname,
-            lastname,
-            username,
-            email,
-            password,
-            password2
-        }
-    }
-
-    // Send request to server
-    axios(config)
-        .then(res => {
-            dispatch({
-                type: REGISTER_SUCCESS,
-                payload: res.data
-            })
-        })
-        .catch(err => {
-            dispatch(returnErrors(err.response.data, err.response.status, 'REGISTER_FAIL'));
-            dispatch({ type: REGISTER_FAIL });
-        })
-
-}
-
-export const tokenConfig = getState => {
-    // Get token from localstorage
+export const getHeaders = (getState) => {
+    // Get token from state
     const token = getState().user.token;
 
-    // Header
-    const config = {
-        headers: {
-            "Content-Type": "application/json"
-        }
-    }
-
-    // If token, add to headers
-    if(token){
-        config.headers['x-auth-token'] = token;
-    }
-
-    return config;
+    // Get the current retreat from state
+    const retreat_id = getState().retreats.selected_retreat ? getState().retreats.selected_retreat.id : null
+    
+    return {
+        "x-auth-token": token,
+        "Content-Type": "application/json",
+        "retreat_id": retreat_id ? retreat_id : ''
+    };
 }

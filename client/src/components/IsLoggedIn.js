@@ -1,105 +1,74 @@
-import React, { Component } from 'react';
-import GroupList from './GroupList';
+import React, { Component, Fragment } from 'react';
 import moment from 'moment';
-import ClientList from './ClientList';
-import classnames from 'classnames';
 import { loadGroups } from '../actions/groupActions';
+import { loadRetreats } from '../actions/retreatActions';
 import { loadClients, loadClientOuraData } from '../actions/clientActions';
 import { connect } from 'react-redux';
-import {
-    Nav,
-    NavItem,
-    NavLink,
-    TabContent,
-    TabPane,
-    Spinner
-} from 'reactstrap';
+import { Route } from "react-router-dom";
+import ClientFinished from './ClientFinished';
+import Home from './Home';
+import NewClient from './NewClient';
+import UserProfile from './UserProfile';
+import SelectRetreat from './SelectRetreat';
+import AppNavbar from './AppNavbar';
+import GroupProfile from './GroupProfile';
 
 class IsLoggedIn extends Component {
-    constructor(props) {
-        super(props);
-
-        this.state = {
-            activeTab: '1',
-            loadStatus: false
-        };
+    state = {
+        loadStatus: false
     }
 
     componentDidMount(){
+        this.props.loadRetreats();
         this.props.loadClients();
         this.props.loadGroups();
     }
 
     // Check that we got the clients and that we're done loading
     componentDidUpdate(prevProps){
-        var initialDay = new moment().format('YYYY-MM-DD');
-        if(!this.props.clients.isLoading && 
+        if(
+            this.props.retreats.retreat_id &&
+            !this.props.clients.isLoading && 
             !this.state.loadStatus &&
-            prevProps.clients.clients !== this.props.clients.clients){
-
-                this.setState({
-                    loadStatus: true
-                }, () => {
-                    for(let client of this.props.clients.clients){
-                        this.props.loadClientOuraData(client.oura_api.oura_access_token, initialDay, client.id);
-                    }
-                })
+            prevProps.clients.clients !== this.props.clients.clients
+        ){
+            var initialDay = new moment().format('YYYY-MM-DD');
+            this.setState({ loadStatus: true }, () => {
+                for(let client of this.props.clients.clients){
+                    this.props.loadClientOuraData(client.oura_api.oura_access_token, initialDay, client.id);
+                }
+            })
         }
-    }
-
-    toggle = (tab) => {
-        if (this.state.activeTab !== tab) {
-            this.setState({
-                activeTab: tab
-            });
-        }
-    }
-
-    getClientList = () => {
-        return this.props.clients.isLoading ? <Spinner color='dark' /> : <ClientList />
-    }
-
-    getGroupList = () => {
-        return this.props.groups.isLoading ? <Spinner color='dark' /> : <GroupList />
     }
 
     render() {
         return (
-            <div className='container'>
-                <Nav tabs>
-                    <NavItem>
-                        <NavLink className={classnames({ active: this.state.activeTab === '1' })}
-                                onClick={() => { this.toggle('1'); }}
-                                >Clients</NavLink>
-                    </NavItem>
-                    <NavItem>
-                        <NavLink className={classnames({ active: this.state.activeTab === '2' })}
-                                onClick={() => { this.toggle('2'); }} 
-                                >Groups</NavLink>
-                    </NavItem>
-                </Nav>
-                <TabContent className='mb-3' activeTab={this.state.activeTab}>
-                    <TabPane tabId="1">
-                        { this.getClientList() }
-                    </TabPane>
-                    <TabPane tabId="2">
-                        { this.getGroupList() }
-                    </TabPane>
-                </TabContent>
-            </div>
+            <Fragment>
+                <AppNavbar />
+                <div className='container'>
+                    <Route exact path="/" component={Home} />
+                    <Route exact path="/new-client" component={NewClient} />
+                    <Route exact path="/new-client/success" component={ClientFinished} />
+                    <Route exact path="/view/:id" component={UserProfile} />
+                    <Route exact path="/retreats" component={SelectRetreat} />
+                    <Route exact path="/group/:id" component={GroupProfile} />
+                </div>
+            </Fragment>
         );
     }
 }
 
 const mapStateToProps = state => ({
     clients: state.clients,
-    groups: state.groups
+    groups: state.groups,
+    retreats: state.retreats
 })
 
 export default connect(
     mapStateToProps, {
         loadClients,
         loadClientOuraData,
-        loadGroups
+        loadGroups,
+        loadRetreats
     }
 )(IsLoggedIn);

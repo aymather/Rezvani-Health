@@ -7,13 +7,12 @@ import {
     NavbarBrand,
     Nav,
     NavItem,
-    Container
+    Container,
+    NavLink
 } from 'reactstrap';
-
-import AppLogo from './AppLogo';
-import Login from './Login';
+import ElementsLogo from './ElementsLogo';
 import Logout from './Logout';
-import Register from './Register';
+import { withRouter } from 'react-router-dom';
 
 class AppNavbar extends Component {
     
@@ -27,41 +26,24 @@ class AppNavbar extends Component {
         });
     };
 
+    toRetreats = () => {
+        this.props.history.push('/retreats');
+    }
+
     render() {
-        const { isAuthenticated, user } = this.props.user;
-
-        const authLinks = (
-            <Fragment>
-                <NavItem>
-                    <span className='navbar-text mr-3'>
-                        <strong>Welcome {user ? user.firstname : ''}</strong>
-                    </span>
-                </NavItem>
-                <NavItem>
-                    <Logout />
-                </NavItem>
-            </Fragment>
-        );
-
-        const guestLinks = (
-            <Fragment>
-                <NavItem>
-                    <Register />
-                </NavItem>
-                <NavItem>
-                    <Login />
-                </NavItem>
-            </Fragment>
-        );
-
         return (
-            <Navbar color='dark' dark expand='sm' className='mb-5'>
+            <Navbar expand='sm' className='mb-5'>
                 <Container>
-                    <NavbarBrand href='/'><AppLogo size='logo-wrap-sm' color='logo-white' /></NavbarBrand>
+                    <NavbarBrand href='/'><ElementsLogo /></NavbarBrand>
                     <NavbarToggler onClick={this.toggle} />
                     <Collapse isOpen={this.state.isOpen} navbar>
                         <Nav className='ml-auto' navbar>
-                            {isAuthenticated ? authLinks : guestLinks}
+                            <NavItem>
+                                <Logout />
+                            </NavItem>
+                            <NavItem>
+                                <NavLink onClick={this.toRetreats}>Retreats</NavLink>
+                            </NavItem>
                         </Nav>
                     </Collapse>
                 </Container>
@@ -74,7 +56,6 @@ const mapStateToProps = state => ({
     user: state.user
 })
 
-export default connect(
-    mapStateToProps,
-    null
-)(AppNavbar);
+export default withRouter(connect(
+    mapStateToProps
+)(AppNavbar));

@@ -3,7 +3,6 @@ import { Pie } from 'react-chartjs-2';
 
 class MacrosPieChart extends Component {
     state = {
-        macros: null,
         data: {
             labels: null,
             datasets: null
@@ -11,36 +10,39 @@ class MacrosPieChart extends Component {
         options: {
             maintainAspectRatio: false,
             legend: {
-                display: false
+                display: true
             }
         }
     }
 
-    componentWillReceiveProps({ macros }){
-        var data = [];
-        var labels = [];
-        for(let [key, val] of Object.entries(macros)){
-            labels.push(key);
-            data.push(val * 100);
-        }
-        this.setState({
-            data: {
-                labels,
-                datasets: [{
-                    data,
-                    backgroundColor: [
-                        '#FF6384',
-                        '#36A2EB',
-                        '#FFCE56'
-                    ],
-                    hoverBackgroundColor: [
-                        '#FF6384',
-                        '#36A2EB',
-                        '#FFCE56'
-                    ]
-                }]
+    componentWillMount(){
+        var { macros } = this.props;
+        if(!this.state.data.datasets && macros){
+            var data = [];
+            var labels = [];
+            for(let [key, val] of Object.entries(macros)){
+                labels.push(key);
+                data.push(val * 100);
             }
-        })
+            this.setState({
+                data: {
+                    labels,
+                    datasets: [{
+                        data,
+                        backgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56'
+                        ],
+                        hoverBackgroundColor: [
+                            '#FF6384',
+                            '#36A2EB',
+                            '#FFCE56'
+                        ]
+                    }]
+                }
+            })
+        }
     }
 
     render() {
@@ -50,9 +52,9 @@ class MacrosPieChart extends Component {
                     this.state.data.datasets ?
                     <Pie data={this.state.data} 
                          options={this.state.options}
-                         width={100}
-                         height={100}
-                        /> : null
+                         width={this.props.width ? this.props.width : 100}
+                         height={this.props.height ? this.props.height : 100}
+                    /> : null
                 }
             </div>
         );

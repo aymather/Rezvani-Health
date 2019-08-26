@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import EditGroupMemebersModal from './EditGroupMemebersModal';
 import Cal from './Cal';
 import { loadClientOuraData } from '../actions/clientActions';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
@@ -12,6 +11,7 @@ import {
 } from 'reactstrap';
 import moment from 'moment';
 import { connect } from 'react-redux';
+import { withRouter } from 'react-router-dom';
 
 class GroupListItem extends Component {
     state = {
@@ -94,11 +94,17 @@ class GroupListItem extends Component {
         return `${month} ${day}, ${year}`;
     }
 
+    toGroupProfile = () => {
+        this.props.history.push(`/group/${this.props.group.id}`);
+    }
+
     render() {
         return (
             <ListGroupItem key={this.props.group.id} className="justify-content-between">
                 <ListGroupItemHeading className='d-flex flex-column text-center'>
-                    <span className='my-2'>{this.props.group.name}</span>
+                    <div className='my-2 open-sans text-muted pointer darken-hover' onClick={this.toGroupProfile}>
+                        {this.props.group.name}
+                    </div>
                     <div className='d-flex justify-content-center align-items-center'>
                         <div className='mx-3 pointer' onClick={this.dateBackward}>
                             <FontAwesomeIcon icon={faArrowLeft} color='#007bff' size='sm' />
@@ -119,7 +125,7 @@ const mapStateToProps = state => ({
     clients: state.clients
 })
 
-export default connect(
+export default withRouter(connect(
     mapStateToProps,
     { loadClientOuraData }
-)(GroupListItem);
+)(GroupListItem));

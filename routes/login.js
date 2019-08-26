@@ -7,10 +7,12 @@ const config = require('config');
 
 router.post('/login', (req, res) => {
     
-    const { username, password } = req.body;
-    if(!username || !password){
+    const { password } = req.body;
+    if(!password){
         return res.status(400).json({ msg: "Please enter all fields" });
     }
+
+    const username = 'root';
 
     User.findOne({ username })
         .then(user => {
@@ -21,32 +23,29 @@ router.post('/login', (req, res) => {
             bcrypt.compare(password, user.password)
                 .then(isMatch => {
                     if(!isMatch) return res.status(400).json({ msg: "Invalid password"});
-                
+
                     jwt.sign(
                         { id: user.id },
                         config.get('jwtSecret'),
                         { expiresIn: 3600 },
                         (err, token) => {
-                            if(err) return res.status(500).json({msg: "Internal server error."});
+                            if(err) return res.status(500).json({ msg: "Internal server error." });
                             res.json({
                                 token,
                                 user: {
                                     id: user.id,
                                     username: user.username,
-                                    firstname: user.firstname,
-                                    lastname: user.lastname,
-                                    email: user.email,
-                                    groups: user.groups
+                                    retreats: user.retreats
                                 }
                             })
                         }
                     )
                 })
-                .catch(err => {
+                .catch(() => {
                     return res.status(500).json({ msg: "Internal server error"});
                 }) 
         })
-        .catch(err => {
+        .catch(() => {
             return res.status(500).json({ msg: "Internal server error"});
         })
     

@@ -5,7 +5,6 @@ import {
     CLIENTS_FAIL,
     CLIENTS_LOADING,
     CLIENT_OURA_DATA,
-    OURA_NOT_AUTHORIZED,
     CLIENT_OURA_DATA_LOADING
 } from '../actions/types';
 
@@ -59,22 +58,6 @@ export default function(state = initialState, action){
                         return {
                             ...client,
                             isLoading: true
-                        }
-                    }
-                    return client;
-                })
-            }
-        case OURA_NOT_AUTHORIZED:
-            return {
-                ...state,
-                clients: state.clients.map(client => {
-                    if(client.id === action.payload){
-                        return {
-                            ...client,
-                            isLoading: false,
-                            sleep: null,
-                            readiness: null,
-                            activity: null
                         }
                     }
                     return client;

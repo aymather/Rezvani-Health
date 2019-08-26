@@ -2,11 +2,12 @@ const express = require('express');
 const router = express.Router();
 const User = require('../config/models');
 const authMiddleware = require('../middleware/auth');
+const retreatIdMiddleware = require('../middleware/retreatId');
 
-router.get('/getgroups', authMiddleware, (req, res) => {
+router.get('/getgroups', authMiddleware, retreatIdMiddleware, (req, res) => {
     User.findById(req.user.id)
         .then(user => {
-            var group_data = user.groups.map(group => {
+            var group_data = user.retreats.id(req.retreat_id).groups.map(group => {
                 return {
                     members: group.members,
                     name: group.name,
@@ -21,16 +22,16 @@ router.get('/getgroups', authMiddleware, (req, res) => {
     
 })
 
-router.post('/addgroup', authMiddleware, (req, res) => {
+router.post('/addgroup', authMiddleware, retreatIdMiddleware, (req, res) => {
 
     const { group_name } = req.body;
     User.findById(req.user.id)
         .then(user => {
-            user.groups.push({ name: group_name });
+            user.retreats.id(req.retreat_id).groups.push({ name: group_name });
             user.save()
                 .then(savedUser => {
                     // Get the group we just saved
-                    var newGroup = savedUser.groups[savedUser.groups.length-1];
+                    var newGroup = savedUser.retreats.id(req.retreat_id).groups[savedUser.retreats.id(req.retreat_id).groups.length-1];
                     res.json({
                         members: newGroup.members,
                         name: newGroup.name,
@@ -47,18 +48,18 @@ router.post('/addgroup', authMiddleware, (req, res) => {
 
 })
 
-router.post('/removegroup', authMiddleware, (req, res) => {
+router.post('/removegroup', authMiddleware, retreatIdMiddleware, (req, res) => {
 
     const { group_id } = req.body;
     User.findById(req.user.id)
         .then(user => {
             // Remove that id from any clients part of it
-            for(id of user.groups.id(group_id).members){
-                user.clients.id(id).groups = user.clients.id(id).groups.filter(each_id => each_id !== group_id);
+            for(id of user.retreats.id(req.retreat_id).groups.id(group_id).members){
+                user.retreats.id(req.retreat_id).clients.id(id).groups = user.retreats.id(req.retreat_id).clients.id(id).groups.filter(each_id => each_id !== group_id);
             }
 
             // Remove group model
-            user.groups.id(group_id).remove();
+            user.retreats.id(req.retreat_id).groups.id(group_id).remove();
             user.save()
                 .then(() => {
                     res.json({ id: group_id });
@@ -73,30 +74,30 @@ router.post('/removegroup', authMiddleware, (req, res) => {
 
 })
 
-router.post('/editGroupMembers', authMiddleware, (req, res) => {
+router.post('/editGroupMembers', authMiddleware, retreatIdMiddleware, (req, res) => {
     const { group_id, member_status } = req.body;
 
     User.findById(req.user.id)
         .then(user => {
-            var group = user.groups.id(group_id);
+            var group = user.retreats.id(req.retreat_id).groups.id(group_id);
             for(var [id, status] of Object.entries(member_status)){
 
                 // Add/remove that group to the client's 'group' list
-                if(status && user.clients.id(id).groups.indexOf(group_id) === -1){
+                if(status && user.retreats.id(req.retreat_id).clients.id(id).groups.indexOf(group_id) === -1){
                     // If the group should exist in their array and it doesn't, add it
-                    user.clients.id(id).groups.push(group_id);
+                    user.retreats.id(req.retreat_id).clients.id(id).groups.push(group_id);
                 } else if(!status && user.clients.id(id).groups.indexOf(group_id) !== -1){
                     // If the group shouldn't exist in the array and it does, remove it
-                    var new_group_list = user.clients.id(id).groups.filter(each_id => each_id !== group_id);
-                    user.clients.id(id).groups = new_group_list;
+                    var new_group_list = user.retreats.id(req.retreat_id).clients.id(id).groups.filter(each_id => each_id !== group_id);
+                    user.retreats.id(req.retreat_id).clients.id(id).groups = new_group_list;
                 }
 
                 // Edit group client_id list
                 if(status && group.members.indexOf(id) === -1){
-                    user.groups.id(group_id).members.push(id);
+                    user.retreats.id(req.retreat_id).groups.id(group_id).members.push(id);
                 } else if(!status && group.members.indexOf(id) !== -1) {
-                    var new_member_list = user.groups.id(group_id).members.filter(each_id => each_id !== id);
-                    user.groups.id(group_id).members = new_member_list;
+                    var new_member_list = user.retreats.id(req.retreat_id).groups.id(group_id).members.filter(each_id => each_id !== id);
+                    user.retreats.id(req.retreat_id).groups.id(group_id).members = new_member_list;
                 }
             }
 

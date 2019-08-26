@@ -1,6 +1,6 @@
 const mongoose = require('mongoose');
 const Schema = mongoose.Schema;
-const moment = require('moment');
+const moment = require('../client/node_modules/moment');
 
 // Copy of Oura Activity API response
 const ActivitySchema = new Schema({
@@ -90,7 +90,7 @@ const SleepSchema = new Schema({
 const DataEntry = new Schema({
     date: {
         type: Object,
-        default: moment()
+        default: new moment()
     },
     meta: {
         RMR: { type: Number },
@@ -103,14 +103,15 @@ const DataEntry = new Schema({
         Blood_Glucose: { type: Number },
         Weight: { type: Number },
         Caloric_Level: { type: Number },
-        Hemoglobin: { type: Number }
+        Hemoglobin: { type: Number },
+        BMI: { type: Number }
     }
 })
 
 const ClientSchema = new Schema({
     signup_date: {
         type: Object,
-        default: moment()
+        default: new moment()
     },
     firstname: { type: String, required: true },
     lastname: { type: String, required: true },
@@ -144,23 +145,27 @@ const ClientSchema = new Schema({
 })
 
 const GroupSchema = new Schema({
-    created: { type: Object, default: moment() },
+    created: { type: Object, default: new moment() },
     name: { type: String, required: true },
     members: { type: Array }
 })
 
-const UserSchema = new Schema({
-    firstname: { type: String, required: true },
-    lastname: { type: String },
-    username: { type: String, required: true },
-    password: { type: String, required: true },
-    email: { type: String },
-    signup_date: {
-        type: Object,
-        default: moment()
-    },
+const RetreatSchema = new Schema({
+    date_created: { type: Object, default: new moment() },
+    date_completed: { type: Object, default: null },
+    name: { type: String },
     groups: [GroupSchema],
     clients: [ClientSchema]
+})
+
+const UserSchema = new Schema({
+    username: { type: String, required: true },
+    password: { type: String, required: true },
+    signup_date: {
+        type: Object,
+        default: new moment()
+    },
+    retreats: [RetreatSchema]
 });
 
 const User = mongoose.model('User', UserSchema, 'users');

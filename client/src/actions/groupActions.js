@@ -9,15 +9,15 @@ import {
     REMOVE_GROUP_FAIL
 } from './types';
 import { returnErrors } from './errorActions';
-import { tokenConfig } from './authActions';
+import { getHeaders } from './authActions';
 
 export const loadGroups = () => (dispatch, getState) => {
     dispatch({ type: GROUPS_LOADING });
 
     const config = {
-        method: 'get',
+        method: 'GET',
         url: '/getgroups',
-        headers: tokenConfig(getState).headers
+        headers: getHeaders(getState)
     }
 
     axios(config)
@@ -37,9 +37,9 @@ export const addGroup = group_name => (dispatch, getState) => {
     dispatch({ type: GROUPS_LOADING });
 
     const config = {
-        method: 'post',
+        method: 'POST',
         url: '/addgroup',
-        headers: tokenConfig(getState).headers,
+        headers: getHeaders(getState),
         data: { group_name }
     }
 
@@ -57,13 +57,11 @@ export const addGroup = group_name => (dispatch, getState) => {
 
 }
 
-export const removeGroup = group_id => (dispatch, getState) => {
-    dispatch({ type: GROUPS_LOADING });
-
+export const removeGroup = (group_id, history) => (dispatch, getState) => {
     const config = {
-        method: 'post',
+        method: 'POST',
         url: '/removegroup',
-        headers: tokenConfig(getState).headers,
+        headers: getHeaders(getState),
         data: { group_id }
     }
 
@@ -73,6 +71,7 @@ export const removeGroup = group_id => (dispatch, getState) => {
                 type: REMOVE_GROUP,
                 payload: res.data
             })
+            history.push('/');
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));
@@ -85,9 +84,9 @@ export const editGroupMembers = (group_id, member_status) => (dispatch, getState
     dispatch({ type: GROUPS_LOADING });
 
     var config = {
-        method: 'post',
+        method: 'POST',
         url: '/editGroupMembers',
-        headers: tokenConfig(getState).headers,
+        headers: getHeaders(getState),
         data: {
             member_status,
             group_id
@@ -96,7 +95,7 @@ export const editGroupMembers = (group_id, member_status) => (dispatch, getState
 
     axios(config)
         .then(() => {
-            config.method = 'get';
+            config.method = 'GET';
             config.url = '/getgroups';
             delete config.data;
             axios(config)

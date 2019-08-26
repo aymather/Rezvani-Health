@@ -13,7 +13,6 @@ import {
     ToastBody,
     Spinner
 } from 'reactstrap';
-import { connect } from 'react-redux';
 
 class OuraScores extends Component {
     state = {
@@ -25,17 +24,26 @@ class OuraScores extends Component {
 
     changeDate = day => {
         this.getOuraData(this.props.client.oura_api.oura_access_token, day)
-            .then(res => {
+            .then(data => {
                 this.setState({
-                    sleep: res.sleep,
-                    readiness: res.readiness,
-                    activity: res.activity,
-                    day,
-                    sleep_switch: true,
-                    readiness_switch: true,
-                    activity_switch: true
+                    sleep: data.sleep === undefined ? 'x' : data.sleep,
+                    readiness: data.readiness === undefined ? 'x' : data.readiness,
+                    activity: data.activity === undefined ? 'x' : data.activity,
+                    day
                 })
             })
+    }
+
+    componentDidMount(){
+        this.getOuraData(this.props.client.oura_api.oura_access_token, new moment().format('YYYY-MM-DD'))
+            .then(data => {
+                this.setState({
+                    sleep: !data.sleep ? 'x' : data.sleep,
+                    readiness: !data.readiness ? 'x' : data.readiness,
+                    activity: !data.activity ? 'x' : data.activity
+                })
+            })
+            .catch(e => console.log(e))
     }
 
     getOuraData = (access_token, day) => {
@@ -57,37 +65,91 @@ class OuraScores extends Component {
         })
     }
 
-    get_icon = () => {
-        if(this.props.client.isLoading) return <Spinner color='dark' className='mr-2' size='sm' />;
-        return null;
-    }
-
-    getToastBody = () => {
-        if(!this.props.client.isLoading){
-            return (<ToastBody className='d-flex justify-content-around align-items-center h-100'>
-                        <SleepViewModal name={this.props.client.firstname + ' ' + this.props.client.lastname} 
-                                        sleep={this.props.switch ? this.props.client.sleep : this.state.sleep }
-                                        className='mt-2'
-                                        formatted_date={this.get_date()}
-                                    />
-                        <ActivityViewModal name={this.props.client.firstname + ' ' + this.props.client.lastname}
-                                           activity={this.props.switch ? this.props.client.activity : this.state.activity }
-                                           className='mt-2'
-                                           formatted_date={this.get_date()}
-                                        />
-                        <ReadinessViewModal name={this.props.client.firstname + ' ' + this.props.client.lastname}
-                                            readiness={this.props.switch ? this.props.client.readiness : this.state.readiness }
-                                            sleep={this.props.switch ? this.props.client.sleep : this.state.sleep }
+    sleepBody = () => {
+        if(this.state.sleep === 'x'){
+            return (
+                <div className='ml-2 mr-2 text-center height-80 d-flex flex-column justify-content-between'>
+                    <h6 className='text-muted small'>SLEEP</h6>
+                    <h3 className='small'>...</h3>
+                </div>
+            )
+        } else if (!this.state.sleep){
+            return (
+                <div className='ml-2 mr-2 text-center height-80 d-flex flex-column justify-content-between'>
+                    <h6 className='text-muted small'>SLEEP</h6>
+                    <Spinner color='dark' className='mx-auto my-auto' />
+                </div>
+            )
+        } else {
+            return (
+                <SleepViewModal name={this.props.client.firstname + ' ' + this.props.client.lastname} 
+                                            sleep={ this.state.sleep }
                                             className='mt-2'
                                             formatted_date={this.get_date()}
                                         />
-                    </ToastBody>)
+            )
+        }
+    }
+
+    activityBody = () => {
+        if(this.state.activity === 'x'){
+            return (
+                <div className='ml-2 mr-2 text-center height-80 d-flex flex-column justify-content-between'>
+                    <h6 className='text-muted small'>ACTIVITY</h6>
+                    <h3 className='small'>...</h3>
+                </div>
+            )
+        } else if (!this.state.activity){
+            return (
+                <div className='ml-2 mr-2 text-center height-80 d-flex flex-column justify-content-between'>
+                    <h6 className='text-muted small'>ACTIVITY</h6>
+                    <Spinner color='dark' className='mx-auto my-auto' />
+                </div>
+            )
         } else {
             return (
-                <ToastBody className='d-flex justify-content-center'>
-                    <Spinner color='dark' />
-                </ToastBody>)
+                <ActivityViewModal name={this.props.client.firstname + ' ' + this.props.client.lastname}
+                                           activity={ this.state.activity }
+                                           className='mt-2'
+                                           formatted_date={this.get_date()}
+                                        />
+            )
         }
+    }
+
+    readinessBody = () => {
+        if(this.state.readiness === 'x'){
+            return (
+                <div className='ml-2 mr-2 text-center height-80 d-flex flex-column justify-content-between'>
+                    <h6 className='text-muted small'>READINESS</h6>
+                    <h3 className='small'>...</h3>
+                </div>
+            )
+        } else if (!this.state.readiness){
+            return (
+                <div className='ml-2 mr-2 text-center height-80 d-flex flex-column justify-content-between'>
+                    <h6 className='text-muted small'>READINESS</h6>
+                    <Spinner color='dark' className='mx-auto my-auto' />
+                </div>
+            )
+        } else {
+            return (
+                <ReadinessViewModal name={this.props.client.firstname + ' ' + this.props.client.lastname}
+                                    readiness={ this.state.readiness }
+                                    sleep={ this.state.sleep }
+                                    className='mt-2'
+                                    formatted_date={this.get_date()}
+                                />
+            )
+        }
+    }
+
+    getToastBody = () => {
+        return (<ToastBody className='d-flex justify-content-around align-items-center h-100'>
+                    { this.sleepBody() }
+                    { this.activityBody() }
+                    { this.readinessBody() }
+                </ToastBody>)
     }
 
     dateForward = () => this.changeDate((new moment(this.state.day).add(1, 'days').format('YYYY-MM-DD')))
@@ -124,10 +186,4 @@ class OuraScores extends Component {
     }
 }
 
-const mapStateToProps = state => ({
-    switch: state.clients.switch
-})
-
-export default connect(
-    mapStateToProps
-)(OuraScores);
+export default OuraScores;

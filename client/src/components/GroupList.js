@@ -6,17 +6,6 @@ import GroupListItem from './GroupListItem';
 import { removeGroup } from '../actions/groupActions';
 
 class GroupList extends Component {
-
-    handle_removeGroup = e => {
-        e.preventDefault();
-
-        var ans = window.confirm('Are you sure you want to remove this group?');
-        
-        if(ans){
-            this.props.removeGroup(e.target.name);
-        }
-    }
-
     get_body = () => {
         if(this.props.groups.groups){
             return (

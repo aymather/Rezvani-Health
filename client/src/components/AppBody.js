@@ -3,8 +3,17 @@ import PropTypes from 'prop-types';
 import { connect } from 'react-redux';
 import IsLoggedIn from './IsLoggedIn';
 import NotLoggedIn from './NotLoggedIn';
+import { clearErrors } from '../actions/errorActions';
+import { loadUser } from '../actions/authActions';
+import { withRouter } from 'react-router';
+
 
 class AppBody extends Component {
+
+    componentDidMount(){
+        this.props.clearErrors();
+        this.props.loadUser(this.props.history);
+    }
 
     static propTypes = {
         isAuthenticated: PropTypes.bool,
@@ -29,6 +38,7 @@ const mapStateToProps = state => ({
     error: state.error  
 })
 
-export default connect(
-    mapStateToProps
-)(AppBody);
+export default withRouter(connect(
+    mapStateToProps, 
+    { loadUser, clearErrors }
+)(AppBody));

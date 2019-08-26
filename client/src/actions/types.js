@@ -5,8 +5,6 @@ export const AUTH_ERROR = 'AUTH_ERROR';
 export const LOGIN_SUCCESS = 'LOGIN_SUCCESS';
 export const LOGIN_FAIL = 'LOGIN_FAIL';
 export const LOGOUT_SUCCESS = 'LOGOUT_SUCCESS';
-export const REGISTER_SUCCESS = 'REGISTER_SUCCESS';
-export const REGISTER_FAIL = 'REGISTER_FAIL';
 
 // Error
 export const GET_ERRORS = 'GET_ERRORS';
@@ -20,11 +18,6 @@ export const ADD_GROUP = 'ADD_GROUP';
 export const REMOVE_GROUP = 'REMOVE_GROUP';
 export const ADD_GROUP_FAIL = 'ADD_GROUP_FAIL';
 export const REMOVE_GROUP_FAIL = 'REMOVE_GROUP_FAIL';
-
-// Group Stage
-export const GROUP_STAGE = 'GROUP_STAGE';
-export const GROUP_STAGE_LOADING = 'GROUP_STAGE_LOADING';
-export const GROUP_STAGE_FAIL = 'GROUP_STAGE_FAIL';
 
 // Member
 export const ADD_MEMBER = 'ADD_MEMBER';
@@ -42,4 +35,11 @@ export const CLIENTS_LOADING = 'CLIENTS_LOADING';
 export const CLIENT_OURA_DATA = 'CLIENT_OURA_DATA';
 export const CLIENT_OURA_DATA_LOADING = 'CLIENT_OURA_DATA_LOADING';
 export const CLIENT_OURA_FAIL = 'CLIENT_OURA_FAIL';
-export const OURA_NOT_AUTHORIZED = 'OURA_NOT_AUTHORIZED';
+
+// Retreats
+export const ADD_RETREAT = 'ADD_RETREAT';
+export const REMOVE_RETREAT = 'REMOVE_RETREAT';
+export const RETREATS_SUCCESS = 'RETREATS_SUCCESS';
+export const SELECT_RETREAT = 'SELECT_RETREAT';
+export const RETREATS_FAIL = 'RETREATS_FAIL';
+export const RETREATS_LOADING = 'RETREATS_LOADING';

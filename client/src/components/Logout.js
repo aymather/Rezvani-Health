@@ -1,21 +1,19 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { NavLink } from 'reactstrap';
 import { connect } from 'react-redux';
 import { logout } from '../actions/authActions';
 
 export class Logout extends Component {
 
-    onSubmitFunc = () => {
+    onLogout = () => {
         this.props.logout();
     }
 
     render(){
         return (
-            <Fragment>
-                <NavLink onClick={this.onSubmitFunc} href='#'>
-                    Logout
-                </NavLink>
-            </Fragment>
+            <NavLink onClick={this.onLogout}>
+                Logout
+            </NavLink>
         );
     }
 }

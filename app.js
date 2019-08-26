@@ -24,13 +24,20 @@ app.use(bodyParser.json());
 
 // Set routs directory
 app.use('/', require('./routes/login'));
-app.use('/', require('./routes/register'));
 app.use('/', require('./routes/groups'));
 app.use('/', require('./routes/clients'));
 app.use('/', require('./routes/user'));
-app.use('/', require('./routes/groupStage'));
+app.use('/', require('./routes/retreats'));
 
 app.use(express.static(path.join(__dirname, 'public')));
+
+if(process.env.NODE_ENV === 'production'){
+    app.use(express.static('client/build'));
+
+    app.get('*', (req, res) => {
+        res.sendFile(path.resolve(__dirname, 'client', 'build', 'index.html'))
+    })
+}
 
 app.listen(PORT, (err) => {
     if(err) console.log(err);

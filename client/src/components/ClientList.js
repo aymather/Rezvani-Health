@@ -2,11 +2,10 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { removeClient } from '../actions/clientActions';
 import { ListGroup } from 'reactstrap';
-import AddClientModal from './AddClientModal';
 import { ouraConfig } from '../config';
 import oura from 'oura';
 import ClientListItem from './ClientListItem';
-import { Input } from 'reactstrap';
+import { Input, Button } from 'reactstrap';
 
 class ClientList extends Component {
 
@@ -47,7 +46,7 @@ class ClientList extends Component {
     get_body = () => {
         if(this.props.clients.clients){
             return this.props.clients.clients.map(client => {
-                if(!this.state.searchText || this.state.searchText.length == 0){
+                if(!this.state.searchText || this.state.searchText.length === 0){
                     return (
                         <ClientListItem client={client}
                                         handle_removeClient={this.handle_removeClient}
@@ -81,7 +80,9 @@ class ClientList extends Component {
         return (
             <div>
                 <div className='d-flex justify-content-between mt-4 align-items-center'>
-                    <AddClientModal />
+                    <Button href='/new-client'
+                            color='primary'
+                    >Create New Client +</Button>
                     <Input
                         type="search"
                         name="search"

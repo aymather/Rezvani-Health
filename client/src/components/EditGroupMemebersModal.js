@@ -67,8 +67,8 @@ class EditGroupMembersModal extends Component {
         return (
             <div>
                 <Button onClick={this.toggle} 
-                        color='info'
-                        className='mr-3'
+                        color='dark'
+                        className='mx-3 my-5'
                 >Edit</Button>
 
                 <Modal isOpen={this.state.modal} toggle={this.toggle}>

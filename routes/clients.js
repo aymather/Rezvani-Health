@@ -9,6 +9,7 @@ const get_data = require('../backend_funcs/get_data');
 const jwt = require('jsonwebtoken');
 const config = require('config');
 const moment = require('moment');
+const retreatIdMiddleware = require('../middleware/retreatId');
 
 // Build options object for authentication
 let options = {
@@ -56,12 +57,13 @@ router.get(redirect_path, (req, res) => {
 
 })
 
-router.get('/clients', authMiddleware, (req, res) => {
+router.get('/clients', authMiddleware, retreatIdMiddleware, (req, res) => {
     User.findById(req.user.id)
         .then(user => {
-            var clients = user.clients.map(client => {
+            var clients = user.retreats.id(req.retreat_id).clients.map(client => {
                 return {
                     id: client._id,
+                    email: client.email,
                     oura_api: client.oura_api,
                     Metabolic_Type: client.Metabolic_Type,
                     firstname: client.firstname,
@@ -105,7 +107,7 @@ router.post('/client-oura-data', authMiddleware, (req, res) => {
     }
 })
 
-router.post('/new-client', authMiddleware, (req, res) => {
+router.post('/new-client', authMiddleware, retreatIdMiddleware, (req, res) => {
     
     var {   firstname, lastname,
             email, gender, birthday,
@@ -113,120 +115,85 @@ router.post('/new-client', authMiddleware, (req, res) => {
             LDL, HDL, TC,
             Trigs, Blood_Glucose,
             Hemoglobin, Body_Fat_Percentage,
-            Weight } = req.body;
+            Weight, BMI } = req.body;
 
-    var errors = [];
+    const { Caloric_Level,
+            Macros,
+            Metabolic_Type,
+            Ratio } = get_data(RMR, gender, HDL, LDL, TC, Trigs);
 
-    if(!firstname || !lastname || !email ||
-       !gender || !birthday || !medications ||
-       !RMR || !LDL || !HDL || !TC ||
-       !Trigs || !Blood_Glucose || !Hemoglobin ||
-       !Body_Fat_Percentage || !Weight){
-
-        errors.push({ msg: "Missing inputs"});
-    }
-
-    RMR = parseFloat(RMR.replace(/,/g, ''));
-    LDL = parseFloat(LDL.replace(/,/g, ''));
-    HDL = parseFloat(HDL.replace(/,/g, ''));
-    TC = parseFloat(TC.replace(/,/g, ''));
-    Trigs = parseFloat(Trigs.replace(/,/g, ''));
-    Blood_Glucose = parseFloat(Blood_Glucose.replace(/,/g, ''));
-    Hemoglobin = parseFloat(Hemoglobin.replace(/,/g, ''));
-    Body_Fat_Percentage = parseFloat(Body_Fat_Percentage.replace(/,/g, ''));
-    Weight = parseFloat(Weight.replace(/,/g, ''));
-
-    if(!RMR || !LDL || !HDL || !TC ||
-       !Trigs || !Blood_Glucose ||
-       !Hemoglobin || !Body_Fat_Percentage ||
-       !Weight){
-
-        errors.push({ msg: "Invalid input"});
-    }
-
-    if(errors.length > 0){
-        res.status(400).json({ msg: "Bad request" });
-    } else {
-
-        const { Caloric_Level,
-                Macros,
+    const Water_Intake = Weight;
+    
+    User.findById(req.user.id)
+        .then(user => {
+            user.retreats.id(req.retreat_id).clients.push({
+                firstname,
+                lastname,
+                email,
+                gender,
+                birthday,
+                medications,
                 Metabolic_Type,
-                Ratio } = get_data(RMR, gender, HDL, LDL, TC, Trigs);
-
-        const Water_Intake = Weight;
-        
-        User.findById(req.user.id)
-            .then(user => {
-                user.clients.push({
-                    firstname,
-                    lastname,
-                    email,
-                    gender,
-                    birthday,
-                    medications,
-                    Metabolic_Type,
-                    Water_Intake,
-                    Macros,
-                    data: {
-                        meta: {
-                            RMR,
-                            LDL,
-                            HDL,
-                            TC,
-                            Ratio,
-                            Trigs,
-                            Blood_Glucose,
-                            Hemoglobin,
-                            Body_Fat_Percentage,
-                            Weight,
-                            Caloric_Level
-                        }
+                Water_Intake,
+                Macros,
+                data: {
+                    meta: {
+                        RMR,
+                        LDL,
+                        HDL,
+                        TC,
+                        Ratio,
+                        Trigs,
+                        Blood_Glucose,
+                        Hemoglobin,
+                        Body_Fat_Percentage,
+                        Weight,
+                        Caloric_Level,
+                        BMI
                     }
-                })
-                
-                // Save & send response
-                user.save()
-                    .then(savedUser => {
-                        
-                        // Pass back the client we just created
-                        var thisClient = savedUser.clients[savedUser.clients.length-1];
-                        var returnClient = {
-                            firstname: thisClient.firstname,
-                            lastname: thisClient.lastname,
-                            id: thisClient._id,
-                            Metabolic_Type: thisClient.Metabolic_Type,
-                            Water_Intake: thisClient.Water_Intake,
-                            Macros: thisClient.Macros,
-                            data: thisClient.data,
-                            oura_api: {},
-                            sleep: null,
-                            activity: null,
-                            readiness: null
-                        }
-                        res.json({ client: returnClient });
-                    })
-                    .catch((e) => {
-                        console.log('error here');
-                        console.log(e);
-                        res.status(500).json({ msg: "Internal server error" });
-                    })
+                }
             })
-        
-    }
+            
+            // Save & send response
+            user.save()
+                .then(savedUser => {
+                    
+                    // Pass back the client we just created
+                    var thisClient = savedUser.retreats.id(req.retreat_id).clients[savedUser.retreats.id(req.retreat_id).clients.length-1];
+                    var returnClient = {
+                        firstname: thisClient.firstname,
+                        lastname: thisClient.lastname,
+                        id: thisClient._id,
+                        email: thisClient.email,
+                        Metabolic_Type: thisClient.Metabolic_Type,
+                        Water_Intake: thisClient.Water_Intake,
+                        Macros: thisClient.Macros,
+                        data: thisClient.data,
+                        oura_api: {},
+                        sleep: null,
+                        activity: null,
+                        readiness: null
+                    }
+                    res.json({ client: returnClient });
+                })
+                .catch(() => {
+                    res.status(500).json({ msg: "Internal server error" });
+                })
+        })
 })
 
-router.post('/remove-client', authMiddleware, (req, res) => {
+router.post('/remove-client', authMiddleware, retreatIdMiddleware, (req, res) => {
     const { client_id } = req.body;
 
     User.findById(req.user.id)
         .then(user => {
             // Remove from any groups they were in
-            for(group of user.groups){
-                user.groups.id(group.id).members = group.members.filter(each_id => each_id !== client_id);
+            for(group of user.retreats.id(req.retreat_id).groups){
+                user.retreats.id(req.retreat_id).groups.id(group.id).members = group.members.filter(each_id => each_id !== client_id);
             }
 
             // Remove client model
-            user.clients.id(client_id).remove();
+            user.retreats.id(req.retreat_id).clients.id(client_id).remove();
 
             // Save
             user.save()

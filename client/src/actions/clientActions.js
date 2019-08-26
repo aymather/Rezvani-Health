@@ -1,5 +1,5 @@
 import axios from 'axios';
-import { tokenConfig } from './authActions';
+import { getHeaders } from './authActions';
 import {
     CLIENTS_LOADING,
     ADD_CLIENT,
@@ -8,7 +8,6 @@ import {
     CLIENTS_FAIL,
     CLIENT_OURA_DATA,
     CLIENT_OURA_FAIL,
-    OURA_NOT_AUTHORIZED,
     CLIENT_OURA_DATA_LOADING
 } from './types';
 import { returnErrors } from './errorActions';
@@ -18,8 +17,8 @@ export const loadClients = () => (dispatch, getState) => {
 
     const config = {
         url: '/clients',
-        headers: tokenConfig(getState).headers,
-        method: 'get'
+        headers: getHeaders(getState),
+        method: 'GET'
     }
 
     axios(config)
@@ -43,24 +42,17 @@ export const loadClientOuraData = (access_token, day, id) => (dispatch, getState
 
     const config = {
         url: '/client-oura-data',
-        headers: tokenConfig(getState).headers,
-        method: 'post',
+        headers: getHeaders(getState),
+        method: 'POST',
         data: { access_token, day, id }
     }
 
     axios(config)
         .then(res => {
-            if(!res.data.sleep){
-                dispatch({
-                    type: OURA_NOT_AUTHORIZED,
-                    payload: res.data.id
-                })
-            } else {
-                dispatch({ 
-                    type: CLIENT_OURA_DATA,
-                    payload: res.data
-                })
-            }
+            dispatch({ 
+                type: CLIENT_OURA_DATA,
+                payload: res.data
+            })
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));
@@ -68,13 +60,13 @@ export const loadClientOuraData = (access_token, day, id) => (dispatch, getState
         })
 }
 
-export const createClient = data => (dispatch, getState) => {
+export const createClient = (data, history) => (dispatch, getState) => {
     dispatch({ type: CLIENTS_LOADING });
 
     const config = {
         url: '/new-client',
-        headers: tokenConfig(getState).headers,
-        method: 'post',
+        headers: getHeaders(getState),
+        method: 'POST',
         data
     }
 
@@ -84,6 +76,7 @@ export const createClient = data => (dispatch, getState) => {
                 type: ADD_CLIENT,
                 payload: res.data
             })
+            history.push('/new-client/success', res.data);
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status, 'CLIENTS_FAIL'))
@@ -91,12 +84,12 @@ export const createClient = data => (dispatch, getState) => {
         })
 }
 
-export const removeClient = client_id => (dispatch, getState) => {
+export const removeClient = (client_id, history) => (dispatch, getState) => {
     dispatch({ type: CLIENTS_LOADING });
     
     const config = {
-        method: 'post',
-        headers: tokenConfig(getState).headers,
+        method: 'POST',
+        headers: getHeaders(getState),
         url: '/remove-client',
         data: { client_id }
     }
@@ -107,6 +100,7 @@ export const removeClient = client_id => (dispatch, getState) => {
                 type: REMOVE_CLIENT,
                 payload: res.data
             })
+            history.push('/');
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));

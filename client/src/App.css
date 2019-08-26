@@ -1,3 +1,15 @@
+@import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
+
+.custom-outline-btn:hover {
+    color: #28a745 !important;
+    background-color: #fff !important;
+}
+
+.text-muted a {
+    color: inherit !important;
+    text-decoration: none !important;
+}
+
 .logo-wrap-sm {
     width: 45px;
     height: auto;
@@ -39,4 +51,51 @@
 
 .pointer {
     cursor: pointer;
+}
+
+.height-80 {
+    height: 80px;
+}
+
+.darken-hover {
+    transition: all .4s;
+}
+
+.darken-hover:hover {
+    color: #333 !important;
+}
+
+.u-hover {
+    border-bottom: 1px solid transparent;
+}
+
+.u-hover:hover {
+    border-bottom: 1px solid rgb(160, 160, 160);
+    cursor: pointer;
+}
+
+.hover-darken-red {
+    transition: all .4s;
+}
+
+.hover-darken-red:hover {
+    color: #8D021F !important;
+}
+
+.open-sans {
+    font-family: 'Open Sans' !important;
+}
+
+.fade-in {
+    opacity: 0;
+    animation: fadeIn .8s ease-in 0s forwards;
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+    }
+    to {
+        opacity: 1;
+    }
 }
