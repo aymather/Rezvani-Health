@@ -107,3 +107,22 @@ export const removeClient = (client_id, history) => (dispatch, getState) => {
             dispatch({ type: CLIENTS_FAIL });
         })
 }
+
+export const sendEmail = (auth_uri, email) => (dispatch, getState) => {
+    const config = {
+        method: 'GET',
+        url: '/send-email',
+        headers: getHeaders(getState)
+    }
+
+    config.headers['x-auth-uri'] = auth_uri;
+    config.headers['email'] = email;
+
+    axios(config)
+        .then(res => {
+            console.log(res.data);
+        })
+        .catch(err => {
+            console.log(err);
+        })
+}

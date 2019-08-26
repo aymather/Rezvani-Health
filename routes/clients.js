@@ -10,6 +10,8 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const moment = require('moment');
 const retreatIdMiddleware = require('../middleware/retreatId');
+const sendmail = require('sendmail')({ silent: true });
+const path = require('path');
 
 // Build options object for authentication
 let options = {
@@ -24,13 +26,12 @@ let authClient = oura.Auth(options);
 let redirect_path = url.parse(options.redirectUri).pathname;
 
 router.get(redirect_path, (req, res) => {
-
     // Trade the authorization code for an access_token
     authClient.code.getToken(req.originalUrl)
         .then(data => {
             // Extract access_token and refresh_token from response
             const { accessToken, refreshToken } = data;
-            const { client_id, token } = JSON.parse(req.query.state);
+            const { retreat_id, client_id, token } = JSON.parse(req.query.state);
 
             // Verify token
             const jwt_user = jwt.verify(token, config.get('jwtSecret'));
@@ -38,13 +39,18 @@ router.get(redirect_path, (req, res) => {
             // Place access/refresh token into client's profile
             User.findById(jwt_user.id)
                 .then(user => {
-                    user.clients.id(client_id).oura_api.oura_access_token = accessToken;
-                    user.clients.id(client_id).oura_api.oura_refresh_token = refreshToken;
+                    user.retreats.id(retreat_id).clients.id(client_id).oura_api.oura_access_token = accessToken;
+                    user.retreats.id(retreat_id).clients.id(client_id).oura_api.oura_refresh_token = refreshToken;
 
-                    user.save().catch(e => {console.log(e)});
+                    user.save()
+                        .then(() => {
+                            res.sendFile(path.resolve(__dirname, '../public', 'docs', 'Success.html'));
+                        })
+                        .catch(e => {
+                            console.log(e);
+                            res.sendFile(path.resolve(__dirname, '../public', 'docs', 'Error.html'));
+                        });
 
-                    res.redirect('http://localhost:3000');
-                    
                 })
                 .catch(() => {
                     res.status(400).json({ msg: "Bad request."});
@@ -207,6 +213,29 @@ router.post('/remove-client', authMiddleware, retreatIdMiddleware, (req, res) =>
         .catch(() => {
             res.status(500).json({ msg: "Internal server error" });
         })
+})
+
+router.get('/send-email', authMiddleware, retreatId, (req, res) => {
+    const auth_uri = req.headers['x-auth-uri'];
+    const email = req.headers['email'];
+
+    if(!auth_uri || !email){
+        res.status(400).json({ msg: "Bad request." })
+    }
+
+    sendmail({
+        from: 'no-reply@gmail.com',
+        to: email,
+        subject: 'Authenticate with Elements',
+        html: `<h1 style='display: inline-block'>Click the link </h1><a href=${auth_uri}>here.</a>`
+    }, (err) => {
+        if(err){
+            console.log(err);
+            res.status(500).json({ msg: "Internal server error." })
+        } else {
+            res.json({ msg: 'Success!' })
+        }
+    })
 })
 
 module.exports = router;

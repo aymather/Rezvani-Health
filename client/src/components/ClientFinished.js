@@ -3,14 +3,37 @@ import MacrosPieChart from './charts/MacrosPieChart';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'reactstrap';
+import { ouraConfig } from '../config';
+import oura from 'oura';
+import { sendEmail } from '../actions/clientActions';
 
 class ClientFinished extends Component {
     state = {
         client: this.props.location.state ? this.props.location.state.client : null
     }
 
+    get_oura_uri = client_id => {
+
+        let state = {
+            token: localStorage.getItem('token'),
+            retreat_id: this.props.retreats.selected_retreat ? this.props.retreats.selected_retreat.id : '',
+            client_id
+        }
+
+        // Build options object for authentication
+        let options = {
+            clientId: ouraConfig.clientId,
+            clientSecret: ouraConfig.clientSecret,
+            redirectUri: ouraConfig.authCallbackUri,
+            state: JSON.stringify(state)
+        }
+
+        let authClient = oura.Auth(options);
+
+        return authClient.code.getUri();
+    }
+
     get_body = () => {
-        console.log(this.state.client);
         if(this.state.client){
             return (
                 <div className='my-5'>
@@ -41,7 +64,12 @@ class ClientFinished extends Component {
                                         />
                         </div>
                     </div>
-                    <Button outline className='mx-auto d-block custom-outline-btn' color='success'>Authenticate With Oura</Button>
+                    <Button outline 
+                            className='mx-auto d-block custom-outline-btn' 
+                            color='success'
+                            onClick={this.authenticateWithEmail}>
+                        Authenticate With Oura
+                    </Button>
                 </div>
             )
         } else {
@@ -49,6 +77,12 @@ class ClientFinished extends Component {
                 <h1>Error</h1>
             )
         }
+    }
+
+    authenticateWithEmail = () => {
+        const auth_uri = this.get_oura_uri(this.state.client.id);
+
+        this.props.sendEmail(auth_uri, this.state.client.email);
     }
 
     render() {
@@ -60,4 +94,11 @@ class ClientFinished extends Component {
     }
 }
 
-export default withRouter(connect()(ClientFinished));
+const mapStateToProps = state => ({
+    retreats: state.retreats
+})
+
+export default withRouter(connect(
+    mapStateToProps,
+    { sendEmail }
+)(ClientFinished));
