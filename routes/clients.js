@@ -10,7 +10,9 @@ const jwt = require('jsonwebtoken');
 const config = require('config');
 const moment = require('moment');
 const retreatIdMiddleware = require('../middleware/retreatId');
-const sendmail = require('sendmail')({ silent: true });
+const grid = require('sendgrid').mail;
+const SENDGRID_API_KEY = require('../config/keys').SENDGRID_API_KEY;
+const sg = require('sendgrid')(SENDGRID_API_KEY);
 const path = require('path');
 
 // Build options object for authentication
@@ -223,19 +225,23 @@ router.get('/send-email', authMiddleware, retreatId, (req, res) => {
         res.status(400).json({ msg: "Bad request." })
     }
 
-    sendmail({
-        from: 'no-reply@gmail.com',
-        to: email,
-        subject: 'Authenticate with Elements',
-        html: `<h1 style='display: inline-block'>Click the link </h1><a href=${auth_uri}>here.</a>`
-    }, (err) => {
-        if(err){
-            console.log(err);
-            res.status(500).json({ msg: "Internal server error." })
-        } else {
-            res.json({ msg: 'Success!' })
-        }
-    })
+    const html = `<h1 style='display: inline-block'>Click the link </h1><a href=${auth_uri}>here.</a>`;
+    const from_email = new grid.Email('test@elementsretreat.com');
+    const to_email = new grid.Email('aymather@gmail.com');
+    const subject = 'Authenticate with Elements';
+    const content = new grid.Content('text/html', html);
+    const mail = new grid.Mail(from_email, subject, to_email, content);
+    
+    var request = sg.emptyRequest({
+        method: 'POST',
+        path: '/v3/mail/send',
+        body: mail.toJSON(),
+    });
+    sg.API(request, (err, response) => {
+        console.log(response.statusCode);
+        console.log(response.body);
+        console.log(response.headers);
+    });
 })
 
 module.exports = router;

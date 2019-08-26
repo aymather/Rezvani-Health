@@ -1,6 +1,7 @@
 module.exports = {
     "mongoURI": "mongodb+srv://alec:wheninrome1@rezvani-health-jbtxv.mongodb.net/test?retryWrites=true",
     "PORT": process.env.PORT || 5000,
+    "SENDGRID_API_KEY": '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',
     "MaleMetablicSettings": {
         'DM': {
             'HDL': [45, 9999],

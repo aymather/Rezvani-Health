@@ -32,7 +32,7 @@
     "react-infinite-calendar": "^2.3.1",
     "request": "^2.88.0",
     "request-promise": "^4.2.4",
-    "sendmail": "^1.6.1",
+    "sendgrid": "^5.2.3",
     "url": "^0.11.0"
   },
   "devDependencies": {}
