@@ -79,6 +79,7 @@ router.get('/clients', authMiddleware, retreatIdMiddleware, (req, res) => {
                     Water_Intake: client.Water_Intake,
                     Macros: client.Macros,
                     data: client.data,
+                    medications: client.medications,
                     isLoading: true
                 }
             })

@@ -1,8 +1,17 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
+.rounded-border {
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
 .custom-outline-btn:hover {
     color: #28a745 !important;
     background-color: #fff !important;
+}
+
+.text-dark-blue {
+    color: #283c57 !important;
 }
 
 .text-muted a {
