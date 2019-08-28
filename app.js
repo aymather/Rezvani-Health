@@ -1,3 +1,8 @@
+// Env vars if not in production
+if(process.env.NODE_ENV !== 'production'){
+    require('dotenv').config({ path: process.cwd() + '/dev.env' });
+}
+
 // Requires
 const express = require('express');
 const bodyParser = require('body-parser');

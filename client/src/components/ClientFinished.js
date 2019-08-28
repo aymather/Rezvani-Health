@@ -3,34 +3,11 @@ import MacrosPieChart from './charts/MacrosPieChart';
 import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import { Button } from 'reactstrap';
-import { ouraConfig } from '../config';
-import oura from 'oura';
 import { sendEmail } from '../actions/clientActions';
 
 class ClientFinished extends Component {
     state = {
         client: this.props.location.state ? this.props.location.state.client : null
-    }
-
-    get_oura_uri = client_id => {
-
-        let state = {
-            token: localStorage.getItem('token'),
-            retreat_id: this.props.retreats.selected_retreat ? this.props.retreats.selected_retreat.id : '',
-            client_id
-        }
-
-        // Build options object for authentication
-        let options = {
-            clientId: ouraConfig.clientId,
-            clientSecret: ouraConfig.clientSecret,
-            redirectUri: ouraConfig.authCallbackUri,
-            state: JSON.stringify(state)
-        }
-
-        let authClient = oura.Auth(options);
-
-        return authClient.code.getUri();
     }
 
     get_body = () => {
@@ -80,9 +57,7 @@ class ClientFinished extends Component {
     }
 
     authenticateWithEmail = () => {
-        const auth_uri = this.get_oura_uri(this.state.client.id);
-
-        this.props.sendEmail(auth_uri, this.state.client.email);
+        this.props.sendEmail(this.state.client.id, this.state.client.email);
     }
 
     render() {

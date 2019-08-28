@@ -4,6 +4,8 @@ import { connect } from 'react-redux';
 import { withRouter } from 'react-router-dom';
 import classnames from 'classnames';
 import LineBreak from './LineBreak';
+import moment from 'moment';
+import { sendEmail } from '../actions/clientActions';
 import {
     Col,
     Nav,
@@ -15,13 +17,18 @@ import {
     Form,
     FormGroup,
     Label,
-    Container
+    Container,
+    Input,
+    Button
 } from 'reactstrap';
 
 class UserProfileBody extends Component {
 
     state = {
-        activeTab: '1'
+        activeTab: '1',
+        gender: this.props.client.gender,
+        age: moment().diff(moment(this.props.client.birthday).format('YYYY-MM-DD'), 'years'),
+
     };
     
     toggle = tab => {
@@ -37,8 +44,23 @@ class UserProfileBody extends Component {
         }
     }
 
+    onChange = e => {
+        this.setState({ [e.target.name]: e.target.value });
+    };
+
+    save = () => {
+        console.log('Saved!');
+    }
+
+    authenticateViaEmail = () => {
+        const { id, email } = this.props.client;
+
+        this.props.sendEmail(id, email);
+    }
+
     render() {
-        console.log(this.props.client);
+        const label = { width: '60px' };
+        const mdLabel = { width: '130px' };
         return (
             <Container>
                 <Row>
@@ -52,7 +74,7 @@ class UserProfileBody extends Component {
                         <LineBreak sm/>
                         <div className='my-4 text-center'>
                             <h6>Notes</h6>
-                            <p>{this.props.client.medications}</p>
+                            <p className='text-muted'>{this.props.client.medications}</p>
                         </div>
                     </Col>
                     <Col sm={{size: 0}} md={{size: 1}}></Col>
@@ -76,70 +98,145 @@ class UserProfileBody extends Component {
                         <TabContent activeTab={this.state.activeTab}>
                             <TabPane tabId="1">
                                 <Row className='my-4 px-3'>
-                                    <Col md={{size:12}} className='my-2 rounded-border'>
-                                        <h5 className='my-3 open-sans text-dark-blue'>Smart Scale</h5>
+                                    <Col md={{size:12}} className='my-2 rounded-border p-4'>
+                                        <h5 className='mb-4 open-sans text-dark-blue'>Smart Scale</h5>
                                         <Form className='px-3'>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>WEIGHT:</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.Weight}<span className='small'>{' lbs'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>WEIGHT:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.Weight + ' lbs'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>WATER INTAKE:</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.Water_Intake}<span className='small'>{' oz'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>WATER INTAKE:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.Water_Intake + ' oz'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>BODY MASS INDEX:</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.BMI}<span className='small'>{' kg/m2'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>BODY MASS INDEX:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.BMI + ' kg/m2'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>BODY FAT PERCENTAGE:</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.Body_Fat_Percentage}<span className='small'>{' %'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>BODY FAT PERCENTAGE:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.Body_Fat_Percentage + ' %'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>BASEL METABOLIC RATE:</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.RMR.toLocaleString()}<span className='small'>{' cal'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>BASEL METABOLIC RATE:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.RMR.toLocaleString() + ' cal'} />
+                                                </Col>
                                             </FormGroup>
                                         </Form>
                                     </Col>
-                                    <Col md={{size:12}} className='my-2 rounded-border'>
-                                        <h5 className='my-3 open-sans text-dark-blue'>Lipid Profile</h5>
+                                    <Col md={{size:12}} className='my-2 rounded-border p-4'>
+                                        <h5 className='mb-3 open-sans text-dark-blue'>Lipid Profile</h5>
                                         <Form className='px-3'>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>{'LOW DENSITY LIPID PROFILE (LDL):'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.LDL}<span className='small'>{' mg/dL'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>{'LOW DENSITY LIPID PROFILE (LDL):'}</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.LDL + ' mg/dL'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>{'HIGH DENSITY LIPID PROFILE (HDL):'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.HDL}<span className='small'>{' mg/dL'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>{'HIGH DENSITY LIPID PROFILE (HDL):'}</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.HDL + ' mg/dL'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>{'TOTAL CHOLESTEROL:'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.TC}<span className='small'>{' mg/dL'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>{'TOTAL CHOLESTEROL:'}</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.TC + ' mg/dL'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>{'R. Cool/HDL Ratio:'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.Ratio}<span className='small'>{' mg/dL'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='my-auto small text-dark-blue font-weight-bold'>{'R. Cool/HDL Ratio:'}</Label>
+                                                <h6 className='my-auto ml-3 text-muted mx-5'>{this.props.client.data[0].meta.Ratio}<span className='small'>{' mg/dL'}</span></h6>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>{'TRIGLYCERIDES:'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.Ratio}<span className='small'>{' mg/dL'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>{'TRIGLYCERIDES:'}</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.Trigs + ' mg/dL'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>{'BLOOD GLUCOSE:'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.Blood_Glucose}<span className='small'>{' mg/dL'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>{'BLOOD GLUCOSE:'}</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.Blood_Glucose + ' mg/dL'} />
+                                                </Col>
                                             </FormGroup>
-                                            <FormGroup row className='mb-2'>
-                                                <Label className='small text-dark-blue font-weight-bold'>{'HEMOGLOBIN:'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.props.client.data[0].meta.Hemoglobin}<span className='small'>{' g/dL'}</span></h6>
+                                            <FormGroup row className='my-4'>
+                                                <Label style={mdLabel} className='small text-dark-blue font-weight-bold my-auto'>{'HEMOGLOBIN:'}</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.data[0].meta.Hemoglobin + ' g/dL'} />
+                                                </Col>
                                             </FormGroup>
                                         </Form>
                                     </Col>
                                 </Row>
                             </TabPane>
                             <TabPane tabId="2">
-                                <Row>
-                                    <Col>
-                                        
+                                <Row className='my-4 px-3'>
+                                    <Col md={{size:12}} className='my-2 rounded-border p-4'>
+                                        <h5 className='mb-3 open-sans text-dark-blue'>Settings</h5>
+                                        <Form className='px-3'>
+                                            <FormGroup row className='mb-2'>
+                                                <Label style={label} className='small text-dark-blue font-weight-bold'>{'AGE:'}</Label>
+                                                <h6 className='ml-3 text-muted'>{this.state.age}<span className='small'>{' years'}</span></h6>
+                                            </FormGroup>
+                                            <FormGroup row className='my-3'>
+                                                <Label style={label} className='small text-dark-blue font-weight-bold my-auto'>EMAIL:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='text' className='ml-1 text-muted' placeholder={this.props.client.email} />
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row className='my-4 d-flex justify-content-between'>
+                                                <Label style={label} className='my-auto small text-dark-blue font-weight-bold'>{'ÖURA:'}</Label>
+                                                <Button outline 
+                                                        className='mr-3 open-sans my-4 d-block custom-outline-btn' 
+                                                        color='success'
+                                                        onClick={this.authenticateViaEmail}>
+                                                    Authenticate
+                                                </Button>
+                                            </FormGroup>
+                                            <FormGroup row className='my-3'>
+                                                <Label style={label} className='small text-dark-blue font-weight-bold my-auto'>SEX:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='select'
+                                                            name='gender'
+                                                            value={this.state.gender} 
+                                                            className='ml-1 text-muted'
+                                                            onChange={this.onChange}>
+                                                        <option>Male</option>
+                                                        <option>Female</option>
+                                                        <option>Other</option>
+                                                    </Input>
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row className='my-3'>
+                                                <Label style={label} className='small text-dark-blue font-weight-bold my-auto'>BIRTHDAY:</Label>
+                                                <Col className='ml-3'>
+                                                    <Input type='date'
+                                                            name='birthday'
+                                                            defaultValue={this.props.client.birthday} 
+                                                            className='ml-1 text-muted'
+                                                            onChange={this.onChange} />
+                                                </Col>
+                                            </FormGroup>
+                                            <FormGroup row>
+                                                <Button outline 
+                                                        className='open-sans my-4 d-block custom-outline-btn' 
+                                                        color='success'
+                                                        onClick={this.save}>
+                                                    Save
+                                                </Button>
+                                            </FormGroup>
+                                        </Form>
                                     </Col>
                                 </Row>
                             </TabPane>
@@ -151,7 +248,11 @@ class UserProfileBody extends Component {
     }
 }
 
+const mapStateToProps = state => ({
+    retreats: state.retreats
+})
+
 export default withRouter(connect(
-    null,
-    { removeClient }
+    mapStateToProps,
+    { removeClient, sendEmail }
 )(UserProfileBody));

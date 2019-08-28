@@ -108,14 +108,14 @@ export const removeClient = (client_id, history) => (dispatch, getState) => {
         })
 }
 
-export const sendEmail = (auth_uri, email) => (dispatch, getState) => {
+export const sendEmail = (id, email) => (dispatch, getState) => {
     const config = {
         method: 'GET',
         url: '/send-email',
         headers: getHeaders(getState)
     }
 
-    config.headers['x-auth-uri'] = auth_uri;
+    config.headers['client_id'] = id;
     config.headers['email'] = email;
 
     axios(config)

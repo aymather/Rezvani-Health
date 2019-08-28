@@ -11,8 +11,7 @@ const config = require('config');
 const moment = require('moment');
 const retreatIdMiddleware = require('../middleware/retreatId');
 const grid = require('sendgrid').mail;
-const SENDGRID_API_KEY = require('../config/keys').SENDGRID_API_KEY;
-const sg = require('sendgrid')(SENDGRID_API_KEY);
+const sg = require('sendgrid')(process.env.SENDGRID_API_KEY);
 const path = require('path');
 
 // Build options object for authentication
@@ -80,6 +79,8 @@ router.get('/clients', authMiddleware, retreatIdMiddleware, (req, res) => {
                     Macros: client.Macros,
                     data: client.data,
                     medications: client.medications,
+                    gender: client.gender,
+                    birthday: client.birthday,
                     isLoading: true
                 }
             })
@@ -178,6 +179,9 @@ router.post('/new-client', authMiddleware, retreatIdMiddleware, (req, res) => {
                         Water_Intake: thisClient.Water_Intake,
                         Macros: thisClient.Macros,
                         data: thisClient.data,
+                        medications: thisClient.medications,
+                        gender: thisClient.gender,
+                        birthday: client.birthday,
                         oura_api: {},
                         sleep: null,
                         activity: null,
@@ -219,10 +223,28 @@ router.post('/remove-client', authMiddleware, retreatIdMiddleware, (req, res) =>
 })
 
 router.get('/send-email', authMiddleware, retreatId, (req, res) => {
-    const auth_uri = req.headers['x-auth-uri'];
+    const client_id = req.headers['client_id'];
     const email = req.headers['email'];
 
-    if(!auth_uri || !email){
+    const state = {
+        token: req.headers['x-auth-token'],
+        retreat_id: req.retreat_id,
+        client_id
+    }
+
+    // Build options object for authentication
+    let options = {
+        clientId: ouraConfig.clientId,
+        clientSecret: ouraConfig.clientSecret,
+        redirectUri: ouraConfig.authCallbackUri,
+        state: JSON.stringify(state)
+    }
+    
+    let authClient = oura.Auth(options);
+
+    const auth_uri = authClient.code.getUri();
+
+    if(!client_id || !email){
         res.status(400).json({ msg: "Bad request." })
     }
 
