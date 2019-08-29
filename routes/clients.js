@@ -308,7 +308,7 @@ router.post('/update-client-profile', authMiddleware, retreatId, (req, res) => {
             // Place updated info into client document
             client.Metabolic_Type = Metabolic_Type;
             client.Macros = Macros;
-            client.data[0].meta.Ratio = Ratio;
+            client.data[0].meta.Ratio = Ratio
             client.data[0].meta.Caloric_Level = Caloric_Level;
 
             user.save()
