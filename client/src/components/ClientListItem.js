@@ -1,7 +1,9 @@
 import React, { Component } from 'react';
 import {
     ListGroupItem,
-    ListGroupItemHeading
+    ListGroupItemHeading,
+    Col,
+    Container
 } from 'reactstrap';
 import OuraScores from './OuraScores';
 import ClientInfoCard from './ClientInfoCard';
@@ -18,10 +20,14 @@ class ClientListItem extends Component {
                         </Link>
                     </div>
                 </ListGroupItemHeading>
-                <div className='d-flex justify-content-around align-items'>
-                    <OuraScores client={this.props.client} />
-                    <ClientInfoCard client={this.props.client} />
-                </div>
+                <Container className='offset-md-1'>
+                    <Col md={{ size: 5 }} className='d-inline-block mx-auto text-center'>
+                        <OuraScores client={this.props.client} className='mx-auto text-center'/>
+                    </Col>
+                    <Col md={{ size: 5 }} className='d-inline-block mx-auto text-center'>
+                        <ClientInfoCard client={this.props.client} />
+                    </Col>
+                </Container>
             </ListGroupItem>
         );
     }

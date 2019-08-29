@@ -8,6 +8,7 @@ import moment from 'moment';
 import { sendEmail } from '../actions/clientActions';
 import validator from 'email-validator';
 import Alerts from './Alerts';
+import MacrosPieChart from './charts//MacrosPieChart';
 import {
     Col,
     Nav,
@@ -205,6 +206,15 @@ class UserProfileBody extends Component {
                                 onClick={this.save}>
                             Save
                         </Button>
+                        <h1 className='small text-center mt-4 mb-2 font-weight-bold'>Macros</h1>
+                        <div className='d-flex justify-content-between'>
+                            <div className='d-flex flex-column justify-content-around'>
+                                <span style={{color:'#FF6384'}} className='small font-weight-bold'>CARBS {(this.props.client.Macros.carb*100) + ' %'}</span>
+                                <span style={{color:'#36A2EB'}} className='small font-weight-bold'>PROTEIN {(this.props.client.Macros.protein*100) + ' %'}</span>
+                                <span style={{color:'#FFCE56'}} className='small font-weight-bold'>FAT {(this.props.client.Macros.fat*100) + ' %'}</span>
+                            </div>
+                            <MacrosPieChart macros={this.props.client.Macros} />
+                        </div>
                     </Col>
                     <Col sm={{size: 0}} md={{size: 1}}></Col>
                     <Col className='w-100' sm={{size: 12}} md={{size: 7}}>
@@ -316,7 +326,7 @@ class UserProfileBody extends Component {
                                         <Form className='px-3'>
                                             <FormGroup row className='mb-2'>
                                                 <Label style={label} className='small text-dark-blue font-weight-bold'>{'AGE:'}</Label>
-                                                <h6 className='ml-3 text-muted'>{this.state.age}<span className='small'>{' years'}</span></h6>
+                                                <h6 className='mx-5 text-muted'>{this.state.age}<span className='small'>{' years'}</span></h6>
                                             </FormGroup>
                                             <FormGroup row className='my-3'>
                                                 <Label style={label} className='small text-dark-blue font-weight-bold my-auto'>EMAIL:</Label>

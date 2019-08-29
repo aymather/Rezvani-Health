@@ -11,7 +11,7 @@ export class Logout extends Component {
 
     render(){
         return (
-            <NavLink onClick={this.onLogout}>
+            <NavLink className='open-sans hover-text-muted' onClick={this.onLogout}>
                 Logout
             </NavLink>
         );

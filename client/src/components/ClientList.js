@@ -2,8 +2,6 @@ import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import { removeClient } from '../actions/clientActions';
 import { ListGroup } from 'reactstrap';
-import { ouraConfig } from '../config';
-import oura from 'oura';
 import ClientListItem from './ClientListItem';
 import { Input, Button } from 'reactstrap';
 
@@ -33,20 +31,21 @@ class ClientList extends Component {
                                         key={client.id}
                                     />
                     )
-                } else {
-                    const regex = new RegExp(`^${this.state.searchText}`, 'gi');
-                    const name = client.firstname + ' ' + client.lastname;
-
-                    if(name.match(regex)){
-                        return (
-                            <ClientListItem client={client}
-                                            handle_removeClient={this.handle_removeClient}
-                                            oura_uri={this.get_oura_uri(client.id)}
-                                            key={client.id}
-                                        />
-                        )
-                    }
                 }
+                const regex = new RegExp(`^${this.state.searchText}`, 'gi');
+                const name = client.firstname + ' ' + client.lastname;
+
+                if(name.match(regex)){
+                    return (
+                        <ClientListItem client={client}
+                                        handle_removeClient={this.handle_removeClient}
+                                        oura_uri={this.get_oura_uri(client.id)}
+                                        key={client.id}
+                                    />
+                    )
+                }
+                
+                return null;
             })
         }
     }

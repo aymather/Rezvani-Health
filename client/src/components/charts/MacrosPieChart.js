@@ -10,7 +10,7 @@ class MacrosPieChart extends Component {
         options: {
             maintainAspectRatio: false,
             legend: {
-                display: true
+                display: false
             }
         }
     }

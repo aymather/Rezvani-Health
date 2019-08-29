@@ -17,7 +17,6 @@ class SelectRetreatListItem extends Component {
                             key={this.props.retreat.id}
                             action
                             className='d-flex justify-content-between'
-                            key={this.props.retreat.id}
                             onClick={this.select_retreat}
                         >
                 <span>{this.props.retreat.name}</span>

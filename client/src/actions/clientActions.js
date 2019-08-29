@@ -75,9 +75,10 @@ export const createClient = (data, history) => (dispatch, getState) => {
         method: 'POST',
         data
     }
-
+    console.log(config);
     axios(config)
         .then(res => {
+            console.log(res.data);
             dispatch({
                 type: ADD_CLIENT,
                 payload: res.data

@@ -8,7 +8,7 @@ import {
 class ClientInfoCard extends Component {
     render() {
         return (
-            <Toast className='w-50 h-100'>
+            <Toast className='w-100 h-100'>
                 <ToastHeader className='d-block'>
                     <h1 className='text-muted text-center small my-2'>Health Data</h1>
                 </ToastHeader>

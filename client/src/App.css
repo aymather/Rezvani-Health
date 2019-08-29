@@ -1,5 +1,13 @@
 @import url('https://fonts.googleapis.com/css?family=Open+Sans&display=swap');
 
+.hover-text-muted {
+    transition: all .4s;
+}
+
+.hover-text-muted:hover {
+    color: rgb(113, 113, 113) !important;
+}
+
 .rounded-border {
     border: 1px solid #ccc;
     border-radius: 5px;

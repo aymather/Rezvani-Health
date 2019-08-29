@@ -121,7 +121,6 @@ router.post('/client-oura-data', authMiddleware, (req, res) => {
 })
 
 router.post('/new-client', authMiddleware, retreatIdMiddleware, (req, res) => {
-    
     var {   firstname, lastname,
             email, gender, birthday,
             medications, RMR,
@@ -136,7 +135,7 @@ router.post('/new-client', authMiddleware, retreatIdMiddleware, (req, res) => {
             Ratio } = get_data(RMR, gender, HDL, LDL, TC, Trigs);
 
     const Water_Intake = Weight;
-    
+
     User.findById(req.user.id)
         .then(user => {
             user.retreats.id(req.retreat_id).clients.push({
@@ -184,7 +183,7 @@ router.post('/new-client', authMiddleware, retreatIdMiddleware, (req, res) => {
                         data: thisClient.data,
                         medications: thisClient.medications,
                         gender: thisClient.gender,
-                        birthday: client.birthday,
+                        birthday: thisClient.birthday,
                         oura_api: {},
                         sleep: null,
                         activity: null,

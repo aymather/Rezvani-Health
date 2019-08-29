@@ -1,4 +1,4 @@
-import React, { Component, Fragment } from 'react';
+import React, { Component } from 'react';
 import { connect } from 'react-redux';
 import {
     Collapse,
@@ -42,7 +42,7 @@ class AppNavbar extends Component {
                                 <Logout />
                             </NavItem>
                             <NavItem>
-                                <NavLink onClick={this.toRetreats}>Retreats</NavLink>
+                                <NavLink className='open-sans hover-text-muted' onClick={this.toRetreats}>Retreats</NavLink>
                             </NavItem>
                         </Nav>
                     </Collapse>
