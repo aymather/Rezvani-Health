@@ -23,26 +23,6 @@ class ClientList extends Component {
         };
     }
 
-    get_oura_uri = client_id => {
-
-        let state = {
-            token: localStorage.getItem('token'),
-            client_id
-        }
-
-        // Build options object for authentication
-        let options = {
-            clientId: ouraConfig.clientId,
-            clientSecret: ouraConfig.clientSecret,
-            redirectUri: ouraConfig.authCallbackUri,
-            state: JSON.stringify(state)
-        }
-
-        let authClient = oura.Auth(options);
-
-        return authClient.code.getUri();
-    }
-
     get_body = () => {
         if(this.props.clients.clients){
             return this.props.clients.clients.map(client => {
@@ -50,7 +30,6 @@ class ClientList extends Component {
                     return (
                         <ClientListItem client={client}
                                         handle_removeClient={this.handle_removeClient}
-                                        oura_uri={this.get_oura_uri(client.id)}
                                         key={client.id}
                                     />
                     )

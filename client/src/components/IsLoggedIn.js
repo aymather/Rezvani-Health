@@ -27,7 +27,7 @@ class IsLoggedIn extends Component {
     // Check that we got the clients and that we're done loading
     componentDidUpdate(prevProps){
         if(
-            this.props.retreats.retreat_id &&
+            this.props.retreats.selected_retreat.id &&
             !this.props.clients.isLoading && 
             !this.state.loadStatus &&
             prevProps.clients.clients !== this.props.clients.clients

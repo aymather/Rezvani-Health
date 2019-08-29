@@ -81,6 +81,9 @@ router.get('/clients', authMiddleware, retreatIdMiddleware, (req, res) => {
                     medications: client.medications,
                     gender: client.gender,
                     birthday: client.birthday,
+                    sleep: null,
+                    activity: null,
+                    readiness: null,
                     isLoading: true
                 }
             })
@@ -265,6 +268,79 @@ router.get('/send-email', authMiddleware, retreatId, (req, res) => {
         console.log(response.body);
         console.log(response.headers);
     });
+})
+
+router.post('/update-client-profile', authMiddleware, retreatId, (req, res) => {
+    const { 
+        medications, gender, Weight, 
+        Water_Intake, BMI, Body_Fat_Percentage, 
+        RMR, LDL, HDL, TC, Trigs, Blood_Glucose, 
+        Hemoglobin, email, birthday, client_id
+    } = req.body;
+    User.findById(req.user.id)
+        .then(user => {
+            // Replace information with new data
+            var client = user.retreats.id(req.retreat_id).clients.id(client_id);
+            client.medications = medications;
+            client.gender = gender;
+            client.data[0].meta.Weight = Weight;
+            client.Water_Intake = Water_Intake;
+            client.data[0].meta.BMI = BMI;
+            client.data[0].meta.Body_Fat_Percentage = Body_Fat_Percentage;
+            client.data[0].meta.RMR = RMR;
+            client.data[0].meta.LDL = LDL;
+            client.data[0].meta.HDL = HDL;
+            client.data[0].meta.TC = TC;
+            client.data[0].meta.Trigs = Trigs;
+            client.data[0].meta.Blood_Glucose = Blood_Glucose;
+            client.data[0].meta.Hemoglobin = Hemoglobin;
+            client.email = email;
+            client.birthday = birthday;
+
+            // Get calculated data
+            const {
+                Caloric_Level,
+                Metabolic_Type,
+                Macros,
+                Ratio
+            } = get_data(RMR, gender, HDL, LDL, TC, Trigs);
+
+            // Place updated info into client document
+            client.Metabolic_Type = Metabolic_Type;
+            client.Macros = Macros;
+            client.data[0].meta.Ratio = Ratio;
+            client.data[0].meta.Caloric_Level = Caloric_Level;
+
+            user.save()
+                .then(savedUser => {
+                    // Get the client we just saved again
+                    var thisClient = savedUser.retreats.id(req.retreat_id).clients.id(client_id);
+                    var returnClient = {
+                        firstname: thisClient.firstname,
+                        lastname: thisClient.lastname,
+                        id: thisClient._id,
+                        email: thisClient.email,
+                        Metabolic_Type: thisClient.Metabolic_Type,
+                        Water_Intake: thisClient.Water_Intake,
+                        Macros: thisClient.Macros,
+                        data: thisClient.data,
+                        medications: thisClient.medications,
+                        gender: thisClient.gender,
+                        birthday: client.birthday,
+                        oura_api: thisClient.oura_api,
+                        sleep: null,
+                        activity: null,
+                        readiness: null
+                    }
+                    res.json({ client: returnClient });
+                })
+                .catch(() => {
+                    res.status(500).json({ msg: "Internal Server Error"})
+                })
+        })
+        .catch(() => {
+            res.status(500).json({ msg: "Internal Server Error"})
+        })
 })
 
 module.exports = router;

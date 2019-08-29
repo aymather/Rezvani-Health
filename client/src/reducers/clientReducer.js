@@ -5,7 +5,11 @@ import {
     CLIENTS_FAIL,
     CLIENTS_LOADING,
     CLIENT_OURA_DATA,
-    CLIENT_OURA_DATA_LOADING
+    CLIENT_OURA_DATA_LOADING,
+    CLIENT_OURA_FAIL,
+    CLIENT_PROFILE_UPDATING,
+    CLIENT_PROFILE_UPDATED,
+    UPDATE_PROFILE_FAIL
 } from '../actions/types';
 
 const initialState = {
@@ -63,6 +67,16 @@ export default function(state = initialState, action){
                     return client;
                 })
             }
+        case CLIENT_OURA_FAIL:
+            return {
+                ...state,
+                clients: state.clients.map(client => {
+                    return {
+                        ...client,
+                        isLoading: false
+                    }
+                })
+            }
         case ADD_CLIENT:
             return {
                 ...state,
@@ -74,6 +88,45 @@ export default function(state = initialState, action){
                 ...state,
                 isLoading: false,
                 clients: state.clients.filter(client => client.id !== action.payload.client_id)
+            }
+        case CLIENT_PROFILE_UPDATED:
+            return {
+                ...state,
+                clients: state.clients.map(client => {
+                    if(client.id === action.payload.client.id){
+                        return {
+                            ...action.payload.client,
+                            isLoading: false
+                        }
+                    }
+                    return client;
+                })
+            }
+        case CLIENT_PROFILE_UPDATING:
+            return {
+                ...state,
+                clients: state.clients.map(client => {
+                    if(client.id === action.payload){
+                        return {
+                            ...client,
+                            isLoading: true
+                        }
+                    }
+                    return client;
+                })
+            }
+        case UPDATE_PROFILE_FAIL:
+            return {
+                ...state,
+                clients: state.clients.map(client => {
+                    if(client.id === action.payload){
+                        return {
+                            ...client,
+                            isLoading: false
+                        }
+                    }
+                    return client;
+                })
             }
         default:
             return state;

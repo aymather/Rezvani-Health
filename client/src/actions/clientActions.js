@@ -7,8 +7,11 @@ import {
     CLIENTS_SUCCESS,
     CLIENTS_FAIL,
     CLIENT_OURA_DATA,
+    CLIENT_OURA_DATA_LOADING,
     CLIENT_OURA_FAIL,
-    CLIENT_OURA_DATA_LOADING
+    CLIENT_PROFILE_UPDATING,
+    UPDATE_PROFILE_FAIL,
+    CLIENT_PROFILE_UPDATED
 } from './types';
 import { returnErrors } from './errorActions';
 
@@ -46,7 +49,7 @@ export const loadClientOuraData = (access_token, day, id) => (dispatch, getState
         method: 'POST',
         data: { access_token, day, id }
     }
-
+    
     axios(config)
         .then(res => {
             dispatch({ 
@@ -56,7 +59,10 @@ export const loadClientOuraData = (access_token, day, id) => (dispatch, getState
         })
         .catch(err => {
             dispatch(returnErrors(err.response.data, err.response.status));
-            dispatch({ type: CLIENT_OURA_FAIL });
+            dispatch({
+                type: CLIENT_OURA_FAIL, 
+                payload: id 
+            });
         })
 }
 
@@ -125,4 +131,30 @@ export const sendEmail = (id, email) => (dispatch, getState) => {
         .catch(err => {
             console.log(err);
         })
+}
+
+export const updateClientProfile = (data) => (dispatch, getState) => {
+    return new Promise((resolve, reject) => {
+        dispatch({ type: CLIENT_PROFILE_UPDATING, payload: data.client_id });
+
+        const config = {
+            method: 'POST',
+            url: '/update-client-profile',
+            headers: getHeaders(getState),
+            data
+        }
+
+        axios(config)
+            .then(res => {
+                dispatch({
+                    type: CLIENT_PROFILE_UPDATED,
+                    payload: res.data
+                })
+                resolve();
+            })
+            .catch(err => {
+                dispatch(returnErrors(err.response.data, err.response.status));
+                dispatch({ type: UPDATE_PROFILE_FAIL, payload: data.client_id });
+            })
+    })
 }

@@ -17,21 +17,9 @@ class ClientListItem extends Component {
                             {this.props.client.firstname + ' ' + this.props.client.lastname}
                         </Link>
                     </div>
-                    {/* <div className='float-right'>
-                        <Button color='info'
-                                className='mr-3'
-                                href={this.props.oura_uri}
-                        >Authenticate</Button>
-                        <Button onClick={this.props.handle_removeClient} 
-                                name={this.props.client.id}
-                                color='danger' 
-                                className='mr-3'
-                        >Remove</Button>
-                    </div> */}
                 </ListGroupItemHeading>
                 <div className='d-flex justify-content-around align-items'>
                     <OuraScores client={this.props.client} />
-                    {/* <MacrosPieChart macros={this.props.client.Macros} /> */}
                     <ClientInfoCard client={this.props.client} />
                 </div>
             </ListGroupItem>
