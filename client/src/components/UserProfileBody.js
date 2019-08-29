@@ -55,7 +55,7 @@ class UserProfileBody extends Component {
     }
 
     deleteClient = () => {
-        const { id } = this.state.client;
+        const { id } = this.props.client;
         if(window.confirm('You are about to delete this client, are you sure you want to delete them and all their data?')){
             this.props.removeClient(id, this.props.history);
         }
@@ -357,6 +357,11 @@ class UserProfileBody extends Component {
                                                             onChange={this.onChange} />
                                                 </Col>
                                             </FormGroup>
+                                            <Button onClick={this.deleteClient}
+                                                    color='danger'
+                                                    block>
+                                                Delete
+                                            </Button>
                                         </Form>
                                     </Col>
                                 </Row>
